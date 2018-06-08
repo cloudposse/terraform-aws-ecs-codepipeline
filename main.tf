@@ -1,6 +1,6 @@
-module "label" {
+module "codepipeline_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes = "${var.attributes}"
+  attributes = ["codepipeline"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
@@ -9,13 +9,23 @@ module "label" {
 }
 
 resource "aws_s3_bucket" "default" {
-  bucket = "${module.label.id}"
+  bucket = "${module.codepipeline_label.id}"
   acl    = "private"
-  tags   = "${module.label.tags}"
+  tags   = "${module.codepipeline_label.tags}"
+}
+
+module "codepipeline_assume_label" {
+  source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
+  attributes = ["codepipeline", "assume"]
+  delimiter  = "${var.delimiter}"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  tags       = "${var.tags}"
 }
 
 resource "aws_iam_role" "default" {
-  name               = "${module.label.id}"
+  name               = "${module.codepipeline_assume_label.id}"
   assume_role_policy = "${data.aws_iam_policy_document.assume.json}"
 }
 
@@ -42,7 +52,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 resource "aws_iam_policy" "default" {
-  name   = "${module.label.id}"
+  name   = "${module.codepipeline_label.id}"
   policy = "${data.aws_iam_policy_document.default.json}"
 }
 
@@ -74,8 +84,19 @@ resource "aws_iam_role_policy_attachment" "s3" {
   policy_arn = "${aws_iam_policy.s3.arn}"
 }
 
+
+module "codepipeline_s3_policy_label" {
+  source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
+  attributes = ["codepipeline", "s3", "policy"]
+  delimiter  = "${var.delimiter}"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  tags       = "${var.tags}"
+}
+
 resource "aws_iam_policy" "s3" {
-  name   = "${module.label.id}-s3"
+  name   = "${module.codepipeline_s3_policy_label.id}"
   policy = "${data.aws_iam_policy_document.s3.json}"
 }
 
@@ -104,8 +125,19 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
   policy_arn = "${aws_iam_policy.codebuild.arn}"
 }
 
+
+module "codebuild_label" {
+  source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
+  attributes = ["codebuild"]
+  delimiter  = "${var.delimiter}"
+  name       = "${var.name}"
+  namespace  = "${var.namespace}"
+  stage      = "${var.stage}"
+  tags       = "${var.tags}"
+}
+
 resource "aws_iam_policy" "codebuild" {
-  name   = "${module.label.id}-codebuild"
+  name   = "${module.codebuild_label.id}"
   policy = "${data.aws_iam_policy_document.codebuild.json}"
 }
 
@@ -147,7 +179,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_s3" {
 }
 
 resource "aws_codepipeline" "source_build_deploy" {
-  name     = "${module.label.id}"
+  name     = "${module.codepipeline_label.id}"
   role_arn = "${aws_iam_role.default.arn}"
 
   artifact_store {

@@ -18,6 +18,11 @@ variable "enabled" {
   description = "Enable ``CodePipeline`` creation"
 }
 
+variable "ecs_cluster_name" {
+  type        = "string"
+  description = "ECS Cluster Name"
+}
+
 variable "service_name" {
   type        = "string"
   description = "ECS Service Name"
