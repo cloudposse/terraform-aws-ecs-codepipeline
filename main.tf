@@ -213,3 +213,7 @@ resource "aws_codepipeline" "source_build_deploy" {
     }
   }
 }
+
+data "aws_caller_identity" "default" {}
+
+data "aws_region" "default" {}
