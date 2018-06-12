@@ -2,11 +2,9 @@
 
 # terraform-aws-ecs-codepipeline [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline)
 
-A Terraform module to generate well-formed JSON documents (container definitions) that are passed to the `aws_ecs_task_definition` Terraform resource.
 
 ## Usage
 
-This module is meant to be used as output only, meaning it will be used to create outputs which are consumed as a parameter by Terraform resources or other modules.
 
 ## Help
 
@@ -59,7 +57,7 @@ See [LICENSE](LICENSE) for full details.
 
 ## About
 
-`terraform-aws-ecs-codepipeline` is maintained and funded by [Cloud Posse, LLC][website].
+This project is maintained and funded by [Cloud Posse, LLC][website].
 
 ![Cloud Posse](https://cloudposse.com/logo-300x69.png)
 

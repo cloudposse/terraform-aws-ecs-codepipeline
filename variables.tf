@@ -51,7 +51,7 @@ variable "build_image" {
 
 variable "build_compute_type" {
   default     = "BUILD_GENERAL1_SMALL"
-  description = "`CodeBuild` instance size. Possible values are: ```BUILD_GENERAL1_SMALL``` ```BUILD_GENERAL1_MEDIUM``` ```BUILD_GENERAL1_LARGE```"
+  description = "`CodeBuild` instance size. Possible values are: `BUILD_GENERAL1_SMALL` `BUILD_GENERAL1_MEDIUM` `BUILD_GENERAL1_LARGE`"
 }
 
 variable "buildspec" {
