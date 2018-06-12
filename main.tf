@@ -1,6 +1,6 @@
 module "codepipeline_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes = ["codepipeline"]
+  attributes  = ["${compact(concat(var.attributes, list("codepipeline")))}"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
