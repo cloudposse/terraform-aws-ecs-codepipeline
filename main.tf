@@ -1,6 +1,6 @@
 module "codepipeline_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes  = ["${compact(concat(var.attributes, list("codepipeline")))}"]
+  attributes = ["${compact(concat(var.attributes, list("codepipeline")))}"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "default" {
 
 module "codepipeline_assume_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes = ["codepipeline", "assume"]
+  attributes = ["${compact(concat(var.attributes, list("codepipeline", "assume")))}"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
@@ -84,10 +84,9 @@ resource "aws_iam_role_policy_attachment" "s3" {
   policy_arn = "${aws_iam_policy.s3.arn}"
 }
 
-
 module "codepipeline_s3_policy_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes = ["codepipeline", "s3", "policy"]
+  attributes = ["${compact(concat(var.attributes, list("codepipeline", "s3")))}"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
@@ -113,7 +112,7 @@ data "aws_iam_policy_document" "s3" {
 
     resources = [
       "${aws_s3_bucket.default.arn}",
-      "${aws_s3_bucket.default.arn}/*"
+      "${aws_s3_bucket.default.arn}/*",
     ]
 
     effect = "Allow"
@@ -125,10 +124,9 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
   policy_arn = "${aws_iam_policy.codebuild.arn}"
 }
 
-
 module "codebuild_label" {
   source     = "github.com/cloudposse/terraform-terraform-label.git?ref=0.1.2"
-  attributes = ["codebuild"]
+  attributes = ["${compact(concat(var.attributes, list("codebuild")))}"]
   delimiter  = "${var.delimiter}"
   name       = "${var.name}"
   namespace  = "${var.namespace}"
