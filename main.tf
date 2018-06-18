@@ -9,6 +9,7 @@ module "codepipeline_label" {
 }
 
 resource "aws_s3_bucket" "default" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   bucket = "${module.codepipeline_label.id}"
   acl    = "private"
   tags   = "${module.codepipeline_label.tags}"
@@ -25,6 +26,7 @@ module "codepipeline_assume_label" {
 }
 
 resource "aws_iam_role" "default" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   name               = "${module.codepipeline_assume_label.id}"
   assume_role_policy = "${data.aws_iam_policy_document.assume.json}"
 }
@@ -47,11 +49,13 @@ data "aws_iam_policy_document" "assume" {
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   role       = "${aws_iam_role.default.id}"
   policy_arn = "${aws_iam_policy.default.arn}"
 }
 
 resource "aws_iam_policy" "default" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   name   = "${module.codepipeline_label.id}"
   policy = "${data.aws_iam_policy_document.default.json}"
 }
@@ -80,6 +84,7 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   role       = "${aws_iam_role.default.id}"
   policy_arn = "${aws_iam_policy.s3.arn}"
 }
@@ -95,6 +100,7 @@ module "codepipeline_s3_policy_label" {
 }
 
 resource "aws_iam_policy" "s3" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   name   = "${module.codepipeline_s3_policy_label.id}"
   policy = "${data.aws_iam_policy_document.s3.json}"
 }
@@ -120,6 +126,7 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   role       = "${aws_iam_role.default.id}"
   policy_arn = "${aws_iam_policy.codebuild.arn}"
 }
@@ -135,6 +142,7 @@ module "codebuild_label" {
 }
 
 resource "aws_iam_policy" "codebuild" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   name   = "${module.codebuild_label.id}"
   policy = "${data.aws_iam_policy_document.codebuild.json}"
 }
@@ -169,14 +177,17 @@ module "build" {
   image_repo_name    = "${var.image_repo_name}"
   image_tag          = "${var.image_tag}"
   github_token       = "${var.github_oauth_token}"
+  enabled            = "${var.enabled}"
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   role       = "${module.build.role_arn}"
   policy_arn = "${aws_iam_policy.s3.arn}"
 }
 
 resource "aws_codepipeline" "source_build_deploy" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   name     = "${module.codepipeline_label.id}"
   role_arn = "${aws_iam_role.default.arn}"
 
