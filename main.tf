@@ -106,6 +106,7 @@ resource "aws_iam_policy" "s3" {
 }
 
 data "aws_iam_policy_document" "s3" {
+  count  = "${var.enabled == "true" ? 1 : 0}"
   statement {
     sid = ""
 
