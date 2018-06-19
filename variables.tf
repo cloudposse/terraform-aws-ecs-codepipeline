@@ -15,7 +15,7 @@ variable "name" {
 
 variable "enabled" {
   default     = "true"
-  description = "Enable ``CodePipeline`` creation"
+  description = "Enable `CodePipeline` creation"
 }
 
 variable "ecs_cluster_name" {
@@ -41,7 +41,7 @@ variable "repo_name" {
 }
 
 variable "branch" {
-  description = "Branch of the GitHub repository, _e.g._ ``master``"
+  description = "Branch of the GitHub repository, _e.g._ `master`"
 }
 
 variable "build_image" {
