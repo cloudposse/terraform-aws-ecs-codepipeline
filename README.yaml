@@ -33,9 +33,6 @@ related:
     description: "Terraform Module to easily leverage AWS CodeBuild for Continuous Integration"
     url: "https://github.com/cloudposse/terraform-aws-codebuild"
 
-
-
-
 # Short description of this project
 description: |-
   Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS.
