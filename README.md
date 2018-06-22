@@ -39,6 +39,10 @@ module "ecs_codepipeline" {
 
 
 
+## Examples
+
+Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
+
 
 
 ## Makefile Targets

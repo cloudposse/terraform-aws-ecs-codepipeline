@@ -74,8 +74,8 @@ usage: |-
   ```
 
 # Example usage
-#examples: |-
-#  Example goes here...
+examples: |-
+  Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
 
 # How to get started quickly
 #quickstart: |-
