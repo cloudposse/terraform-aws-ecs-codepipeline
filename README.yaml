@@ -1,0 +1,106 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-ecs-codepipeline
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-ecs-codepipeline
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline.svg?branch=master"
+    url: "https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg"
+    url: "https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+related:
+  - name: "terraform-aws-alb"
+    description: "Terraform module to provision a standard ALB for HTTP/HTTP traffic"
+    url: "https://github.com/cloudposse/terraform-aws-alb"
+  - name: "terraform-aws-alb-ingress"
+    description: "Terraform module to provision an HTTP style ingress rule based on hostname and path for an ALB"
+    url: "https://github.com/cloudposse/terraform-aws-alb-ingress"
+  - name: "terraform-aws-codebuild"
+    description: "Terraform Module to easily leverage AWS CodeBuild for Continuous Integration"
+    url: "https://github.com/cloudposse/terraform-aws-codebuild"
+  - name: "terraform-aws-ecr"
+    description: "Terraform Module to manage Docker Container Registries on AWS ECR"
+    url: "https://github.com/cloudposse/terraform-aws-ecr"
+  - name: "terraform-aws-ecs-alb-service-task"
+    description: "Terraform module which implements an ECS service which exposes a web service via ALB."
+    url: "https://github.com/cloudposse/terraform-aws-ecs-alb-service-task"
+  - name: "terraform-aws-ecs-container-definition"
+    description: "Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource"
+    url: "https://github.com/cloudposse/terraform-aws-ecs-container-definition"
+  - name: "terraform-aws-lb-s3-bucket"
+    description: "Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs."
+    url: "https://github.com/cloudposse/terraform-aws-lb-s3-bucket"
+
+# Short description of this project
+description: |-
+  Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS.
+
+# How to use this project
+usage: |-
+  ```hcl
+  module "ecs_codepipeline" {
+    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+    name               = "app"
+    namespace          = "eg"
+    stage              = "staging"
+    github_oauth_token = "xxxxxxxxxxxxxx"
+    repo_owner         = "cloudposse"
+    repo_name          = "example"
+    branch             = "master"
+    service_name       = "example"
+    ecs_cluster_name   = "example-ecs-cluster"
+    privileged_mode    = "true"
+  }
+  ```
+
+# Example usage
+examples: |-
+  Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
+
+# How to get started quickly
+#quickstart: |-
+#  Here's how to get started...
+
+# Other files to include in this README from the project folder
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Erik Osterman"
+    homepage: "https://github.com/osterman"
+    avatar: "http://s.gravatar.com/avatar/88c480d4f73b813904e00a5695a454cb?s=144"
+    github: "osterman"
+  - name: "Igor Rodionov"
+    homepage: "https://github.com/goruha"
+    avatar: "http://s.gravatar.com/avatar/bc70834d32ed4517568a1feb0b9be7e2?s=144"
+    github: "goruha"
+  - name: "Andriy Knysh"
+    homepage: "https://github.com/aknysh"
+    avatar: "https://avatars0.githubusercontent.com/u/7356997?v=4&u=ed9ce1c9151d552d985bdf5546772e14ef7ab617&s=144"
+    github: "aknysh"
+  - name: "Sarkis Varozian"
+    homepage: "https://github.com/sarkis"
+    avatar: "https://avatars3.githubusercontent.com/u/42673?s=144&v=4"
+    github: "sarkis"
