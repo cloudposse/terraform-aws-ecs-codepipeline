@@ -19,6 +19,11 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 
 
 
+
+
+
+
+
 ## Usage
 
 ```hcl
@@ -69,6 +74,7 @@ Available targets:
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage`, etc. | string | `-` | no |
 | ecs_cluster_name | ECS Cluster Name | string | - | yes |
 | enabled | Enable `CodePipeline` creation | string | `true` | no |
+| environment_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build. | list | `<list>` | no |
 | github_oauth_token | GitHub Oauth Token with permissions to access private repositories | string | - | yes |
 | image_repo_name | ECR repository name to store the Docker image built by this module. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `UNSET` | no |
 | image_tag | Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `latest` | no |
@@ -175,6 +181,13 @@ See [LICENSE](LICENSE) for full details.
     KIND, either express or implied.  See the License for the
     specific language governing permissions and limitations
     under the License.
+
+
+
+
+
+
+
 
 
 ## Trademarks
