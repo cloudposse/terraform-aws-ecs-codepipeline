@@ -66,7 +66,6 @@ variable "build_timeout" {
   description = "How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed."
 }
 
-
 variable "buildspec" {
   default     = ""
   description = "Declaration to use for building the project. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)"
