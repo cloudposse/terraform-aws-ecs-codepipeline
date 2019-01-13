@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "codebuild" {
 }
 
 module "build" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=badge"
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.11.0"
   enabled               = "${var.enabled}"
   namespace             = "${var.namespace}"
   name                  = "${var.name}"
