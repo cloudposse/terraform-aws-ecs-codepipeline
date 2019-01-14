@@ -53,12 +53,16 @@ related:
 
 # Short description of this project
 description: |-
-  Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS.
+  Terraform Module for CI/CD with AWS Code Pipeline using GitHub webhook triggers and Code Build for ECS.
 
 # How to use this project
 usage: |-
+
+  ### Trigger on GitHub Push
+
+  In this example, we'll trigger the pipeline anytime the `master` branch is updated.
   ```hcl
-  module "ecs_codepipeline" {
+  module "ecs_push_pipeline" {
     source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
     name               = "app"
     namespace          = "eg"
@@ -73,6 +77,32 @@ usage: |-
   }
   ```
 
+  ### Trigger on GitHub Releases
+
+  In this example, we'll trigger anytime a new GitHub release is cut by setting the even type to `release` and using the `json_path` to *exactly* match an `action` of `published`.
+
+  ```hcl
+  module "ecs_release_pipeline" {
+    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+    name               = "app"
+    namespace          = "eg"
+    stage              = "staging"
+    github_oauth_token = "xxxxxxxxxxxxxx"
+    repo_owner         = "cloudposse"
+    repo_name          = "example"
+    branch             = "master"
+    service_name       = "example"
+    ecs_cluster_name   = "example-ecs-cluster"
+    privileged_mode    = "true"
+    github_webhook_events = ["release"]
+    webhook_filter_json_path = "$.action"
+    webhook_filter_match_equals = "published"
+  }
+  ```
+  (Thanks to [Stack Overflow](https://stackoverflow.com/questions/52516087/trigger-aws-codepipeline-by-github-release-webhook#comment91997146_52524711))
+
+
+
 # Example usage
 examples: |-
   Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
@@ -85,6 +115,11 @@ examples: |-
 include:
   - "docs/targets.md"
   - "docs/terraform.md"
+
+references:
+  - name: "aws_codepipeline_webhook"
+    description: "Provides a CodePipeline Webhook"
+    url: "https://www.terraform.io/docs/providers/aws/r/codepipeline_webhook.html"
 
 # Contributors to this project
 contributors:

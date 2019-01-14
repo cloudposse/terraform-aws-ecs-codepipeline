@@ -6,7 +6,7 @@
 # terraform-aws-ecs-codepipeline [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg)](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
-Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS.
+Terraform Module for CI/CD with AWS Code Pipeline using GitHub webhook triggers and Code Build for ECS.
 
 
 ---
@@ -42,8 +42,12 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ## Usage
 
+
+### Trigger on GitHub Push
+
+In this example, we'll trigger the pipeline anytime the `master` branch is updated.
 ```hcl
-module "ecs_codepipeline" {
+module "ecs_push_pipeline" {
   source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
   name               = "app"
   namespace          = "eg"
@@ -57,6 +61,30 @@ module "ecs_codepipeline" {
   privileged_mode    = "true"
 }
 ```
+
+### Trigger on GitHub Releases
+
+In this example, we'll trigger anytime a new GitHub release is cut by setting the even type to `release` and using the `json_path` to *exactly* match an `action` of `published`.
+
+```hcl
+module "ecs_release_pipeline" {
+  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+  name               = "app"
+  namespace          = "eg"
+  stage              = "staging"
+  github_oauth_token = "xxxxxxxxxxxxxx"
+  repo_owner         = "cloudposse"
+  repo_name          = "example"
+  branch             = "master"
+  service_name       = "example"
+  ecs_cluster_name   = "example-ecs-cluster"
+  privileged_mode    = "true"
+  github_webhook_events = ["release"]
+  webhook_filter_json_path = "$.action"
+  webhook_filter_match_equals = "published"
+}
+```
+(Thanks to [Stack Overflow](https://stackoverflow.com/questions/52516087/trigger-aws-codepipeline-by-github-release-webhook#comment91997146_52524711))
 
 
 
@@ -94,23 +122,31 @@ Available targets:
 | enabled | Enable `CodePipeline` creation | string | `true` | no |
 | environment_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build. | list | `<list>` | no |
 | github_oauth_token | GitHub Oauth Token with permissions to access private repositories | string | - | yes |
+| github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/). | list | `<list>` | no |
 | image_repo_name | ECR repository name to store the Docker image built by this module. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `UNSET` | no |
 | image_tag | Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `latest` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | string | `app` | no |
 | namespace | Namespace, which could be your organization name, e.g. 'cp' or 'cloudposse' | string | `global` | no |
-| poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `true` | no |
+| poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `false` | no |
 | privileged_mode | If set to true, enables running the Docker daemon inside a Docker container on the CodeBuild instance. Used when building Docker images | string | `false` | no |
 | repo_name | GitHub repository name of the application to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub Organization or Username. | string | - | yes |
 | service_name | ECS Service Name | string | - | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', or 'test' | string | `default` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit', 'XYZ')` | map | `<map>` | no |
+| webhook_authentication | The type of authentication to use. One of IP, GITHUB_HMAC, or UNAUTHENTICATED. | string | `GITHUB_HMAC` | no |
+| webhook_enabled | Set to false to prevent the module from creating any webhook resources | string | `true` | no |
+| webhook_filter_json_path | The JSON path to filter on. | string | `$.ref` | no |
+| webhook_filter_match_equals | The value to match on (e.g. refs/heads/{Branch}) | string | `refs/heads/{Branch}` | no |
+| webhook_target_action | The name of the action in a pipeline you want to connect to the webhook. The action must be from the source (first) stage of the pipeline. | string | `Source` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | badge_url | The URL of the build badge when badge_enabled is enabled |
+| webhook_id | The CodePipeline webhook's ARN. |
+| webhook_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target. |
 
 
 
@@ -134,6 +170,14 @@ Check out these related projects.
 - [terraform-aws-ecs-container-definition](https://github.com/cloudposse/terraform-aws-ecs-container-definition) - Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource
 - [terraform-aws-lb-s3-bucket](https://github.com/cloudposse/terraform-aws-lb-s3-bucket) - Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs.
 
+
+
+
+## References
+
+For additional context, refer to some of these links. 
+
+- [aws_codepipeline_webhook](https://www.terraform.io/docs/providers/aws/r/codepipeline_webhook.html) - Provides a CodePipeline Webhook
 
 
 ## Help
