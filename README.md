@@ -42,6 +42,10 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 
 ## Usage
 
+
+### Trigger on GitHub Push
+
+In this example, we'll trigger the pipeline anytime the `master` branch is updated.
 ```hcl
 module "ecs_push_pipeline" {
   source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
@@ -58,6 +62,9 @@ module "ecs_push_pipeline" {
 }
 ```
 
+### Trigger on GitHub Releases
+
+In this example, we'll trigger anytime a new GitHub release is cut by setting the even type to `release` and using the `json_path` to *exactly* match an `action` of `published`.
 
 ```hcl
 module "ecs_release_pipeline" {
