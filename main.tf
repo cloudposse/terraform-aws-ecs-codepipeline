@@ -162,6 +162,10 @@ data "aws_iam_policy_document" "codebuild" {
   }
 }
 
+data "aws_caller_identity" "default" {}
+
+data "aws_region" "default" {}
+
 module "build" {
   source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.11.0"
   enabled               = "${var.enabled}"
@@ -260,6 +264,42 @@ resource "aws_codepipeline" "source_build_deploy" {
   }
 }
 
-data "aws_caller_identity" "default" {}
+resource "random_string" "webhook_secret" {
+  count   = "${var.webhook_enabled == "true" ? 1 : 0}"
+  length  = 32
+  special = true
+}
 
-data "aws_region" "default" {}
+locals {
+  webhook_secret = "${join("", random_string.webhook_secret.*.result)}"
+  webhook_url    = "${join("", aws_codepipeline_webhook.webhook_secret.*.url)}"
+}
+
+resource "aws_codepipeline_webhook" "webhook" {
+  count           = "${var.webhook_enabled == "true" ? 1 : 0}"
+  name            = "${module.codepipeline_label.id}"
+  authentication  = "${var.webhook_authentication}"
+  target_action   = "${var.webhook_target_action}"
+  target_pipeline = "${aws_codepipeline.source_build_deploy.name}"
+
+  authentication_configuration {
+    secret_token = "${local.webhook_secret}"
+  }
+
+  filter {
+    json_path    = "${var.webhook_filter_json_path}"
+    match_equals = "${var.webhook_filter_match_equals}"
+  }
+}
+
+module "github_webhooks" {
+  source              = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
+  enabled             = "${var.webhook_enabled}"
+  github_organization = "${var.repo_owner}"
+  github_token        = "${var.github_oauth_token}"
+  github_repositories = ["${var.repo_name}"]
+  webhook_url         = "${local.webhook_url}"
+  content_type        = "json"
+  name                = "web"
+  events              = ["${var.github_webhook_events}"]
+}

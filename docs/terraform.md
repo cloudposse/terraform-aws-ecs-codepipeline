@@ -16,17 +16,30 @@
 | enabled | Enable `CodePipeline` creation | string | `true` | no |
 | environment_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build. | list | `<list>` | no |
 | github_oauth_token | GitHub Oauth Token with permissions to access private repositories | string | - | yes |
+| github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/). | list | `<list>` | no |
 | image_repo_name | ECR repository name to store the Docker image built by this module. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `UNSET` | no |
 | image_tag | Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `latest` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | string | `app` | no |
 | namespace | Namespace, which could be your organization name, e.g. 'cp' or 'cloudposse' | string | `global` | no |
-| poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `true` | no |
+| poll_source_changes | Periodically check the location of your source content and run the pipeline if changes are detected | string | `false` | no |
 | privileged_mode | If set to true, enables running the Docker daemon inside a Docker container on the CodeBuild instance. Used when building Docker images | string | `false` | no |
 | repo_name | GitHub repository name of the application to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub Organization or Username. | string | - | yes |
 | service_name | ECS Service Name | string | - | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', or 'test' | string | `default` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit', 'XYZ')` | map | `<map>` | no |
+| webhook_authentication | The type of authentication to use. One of IP, GITHUB_HMAC, or UNAUTHENTICATED. | string | `GITHUB_HMAC` | no |
+| webhook_enabled | Set to false to prevent the module from creating any webhook resources | string | `true` | no |
+| webhook_filter_json_path | The JSON path to filter on. | string | `$.ref` | no |
+| webhook_filter_match_equals | The value to match on (e.g. refs/heads/{Branch}) | string | `refs/heads/{Branch}` | no |
+| webhook_target_action | The name of the action in a pipeline you want to connect to the webhook. The action must be from the source (first) stage of the pipeline. | string | `Source` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| webhook_id | The CodePipeline webhook's ARN. |
+| webhook_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target. |
 
 ## Outputs
 
