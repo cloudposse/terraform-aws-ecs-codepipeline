@@ -163,12 +163,14 @@ data "aws_iam_policy_document" "codebuild" {
 }
 
 module "build" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.7.2"
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.11.0"
+  enabled               = "${var.enabled}"
   namespace             = "${var.namespace}"
   name                  = "${var.name}"
   stage                 = "${var.stage}"
   build_image           = "${var.build_image}"
   build_compute_type    = "${var.build_compute_type}"
+  build_timeout         = "${var.build_timeout}"
   buildspec             = "${var.buildspec}"
   delimiter             = "${var.delimiter}"
   attributes            = "${concat(var.attributes, list("build"))}"
@@ -179,8 +181,8 @@ module "build" {
   image_repo_name       = "${var.image_repo_name}"
   image_tag             = "${var.image_tag}"
   github_token          = "${var.github_oauth_token}"
-  enabled               = "${var.enabled}"
   environment_variables = "${var.environment_variables}"
+  badge_enabled         = "${var.badge_enabled}"
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
