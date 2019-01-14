@@ -6,7 +6,7 @@
 # terraform-aws-ecs-codepipeline [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-ecs-codepipeline) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg)](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
-Terraform Module for CI/CD with AWS Code Pipeline and Code Build for ECS.
+Terraform Module for CI/CD with AWS Code Pipeline using GitHub webhook triggers and Code Build for ECS.
 
 
 ---
@@ -43,7 +43,7 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Usage
 
 ```hcl
-module "ecs_codepipeline" {
+module "ecs_push_pipeline" {
   source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
   name               = "app"
   namespace          = "eg"
@@ -57,6 +57,27 @@ module "ecs_codepipeline" {
   privileged_mode    = "true"
 }
 ```
+
+
+```hcl
+module "ecs_release_pipeline" {
+  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+  name               = "app"
+  namespace          = "eg"
+  stage              = "staging"
+  github_oauth_token = "xxxxxxxxxxxxxx"
+  repo_owner         = "cloudposse"
+  repo_name          = "example"
+  branch             = "master"
+  service_name       = "example"
+  ecs_cluster_name   = "example-ecs-cluster"
+  privileged_mode    = "true"
+  github_webhook_events = ["release"]
+  webhook_filter_json_path = "$.action"
+  webhook_filter_match_equals = "published"
+}
+```
+(Thanks to [Stack Overflow](https://stackoverflow.com/questions/52516087/trigger-aws-codepipeline-by-github-release-webhook#comment91997146_52524711))
 
 
 
@@ -116,15 +137,9 @@ Available targets:
 
 | Name | Description |
 |------|-------------|
+| badge_url | The URL of the build badge when badge_enabled is enabled |
 | webhook_id | The CodePipeline webhook's ARN. |
 | webhook_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target. |
-
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| badge_url | The URL of the build badge when badge_enabled is enabled |
 
 
 
@@ -148,6 +163,14 @@ Check out these related projects.
 - [terraform-aws-ecs-container-definition](https://github.com/cloudposse/terraform-aws-ecs-container-definition) - Terraform module to generate well-formed JSON documents that are passed to the aws_ecs_task_definition Terraform resource
 - [terraform-aws-lb-s3-bucket](https://github.com/cloudposse/terraform-aws-lb-s3-bucket) - Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs.
 
+
+
+
+## References
+
+For additional context, refer to some of these links. 
+
+- [aws_codepipeline_webhook](https://www.terraform.io/docs/providers/aws/r/codepipeline_webhook.html) - Provides a CodePipeline Webhook
 
 
 ## Help
