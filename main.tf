@@ -267,7 +267,8 @@ resource "aws_codepipeline" "source_build_deploy" {
 resource "random_string" "webhook_secret" {
   count   = "${var.webhook_enabled == "true" ? 1 : 0}"
   length  = 32
-  special = true
+  # Special characters are not allowed in webhook secret (AWS silently ignores webhook callbacks)
+  special = false
 }
 
 locals {
