@@ -300,7 +300,7 @@ module "github_webhooks" {
   github_token         = "${var.github_oauth_token}"
   github_repositories  = ["${var.repo_name}"]
   webhook_url          = "${local.webhook_url}"
-  webhook_content_type = "json"
+  webhook_content_type = "form"
   name                 = "web"
   events               = ["${var.github_webhook_events}"]
 }
