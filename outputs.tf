@@ -5,7 +5,7 @@ output "badge_url" {
 
 output "webhook_id" {
   description = "The CodePipeline webhook's ARN."
-  value       = "${join("", aws_codepipeline_webhook.webhook_secret.*.id)}"
+  value       = "${join("", aws_codepipeline_webhook.webhook.*.id)}"
 }
 
 output "webhook_url" {

@@ -272,7 +272,7 @@ resource "random_string" "webhook_secret" {
 
 locals {
   webhook_secret = "${join("", random_string.webhook_secret.*.result)}"
-  webhook_url    = "${join("", aws_codepipeline_webhook.webhook_secret.*.url)}"
+  webhook_url    = "${join("", aws_codepipeline_webhook.webhook.*.url)}"
 }
 
 resource "aws_codepipeline_webhook" "webhook" {
