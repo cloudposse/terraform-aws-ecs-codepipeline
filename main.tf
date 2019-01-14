@@ -297,9 +297,10 @@ module "github_webhooks" {
   source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
   enabled              = "${var.webhook_enabled}"
   github_organization  = "${var.repo_owner}"
-  github_token         = "${var.github_oauth_token}"
   github_repositories  = ["${var.repo_name}"]
+  github_token         = "${var.github_oauth_token}"
   webhook_url          = "${local.webhook_url}"
+  webhook_secret       = "${local.webhook_secret}"
   webhook_content_type = "form"
   name                 = "web"
   events               = ["${var.github_webhook_events}"]
