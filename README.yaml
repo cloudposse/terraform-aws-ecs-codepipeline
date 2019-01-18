@@ -106,6 +106,40 @@ usage: |-
 # Example usage
 examples: |-
   Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
+  
+  ## Example Buildspec
+
+  Here's an example `buildspec.yaml`. Stick this in the root of your project repository.
+
+  ```yaml
+  version: 0.2
+  phases:
+    pre_build:
+      commands:
+        - echo Logging in to Amazon ECR...
+        - aws --version
+        - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+        - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
+        - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+    build:
+      commands:
+        - echo Build started on `date`
+        - echo Building the Docker image...
+        - REPO_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
+        - docker pull $REPO_URI:latest || true
+        - docker build --cache-from $REPO_URI:latest --tag $REPO_URI:latest --tag $REPO_URI:$IMAGE_TAG .
+    post_build:
+      commands:
+        - echo Build completed on `date`
+        - echo Pushing the Docker images...
+        - REPO_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
+        - docker push $REPO_URI:latest
+        - docker push $REPO_URI:$IMAGE_TAG
+        - echo Writing image definitions file...
+        - printf '[{"name":"%s","imageUri":"%s"}]' "$CONTAINER_NAME" "$REPO_URI:$IMAGE_TAG" | tee imagedefinitions.json
+  artifacts:
+    files: imagedefinitions.json
+  ```
 
 # How to get started quickly
 #quickstart: |-
