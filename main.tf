@@ -282,7 +282,7 @@ resource "aws_codepipeline_webhook" "webhook" {
   name            = "${module.codepipeline_label.id}"
   authentication  = "${var.webhook_authentication}"
   target_action   = "${var.webhook_target_action}"
-  target_pipeline = "${aws_codepipeline.source_build_deploy.name}"
+  target_pipeline = "${join("", aws_codepipeline.source_build_deploy.*.name)}"
 
   authentication_configuration {
     secret_token = "${local.webhook_secret}"
