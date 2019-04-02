@@ -209,6 +209,13 @@ resource "aws_codepipeline" "source_build_deploy" {
     type     = "S3"
   }
 
+  depends_on = [
+    "aws_iam_role_policy_attachment.default",
+    "aws_iam_role_policy_attachment.s3",
+    "aws_iam_role_policy_attachment.codebuild",
+    "aws_iam_role_policy_attachment.codebuild_s3",
+  ]
+
   stage {
     name = "Source"
 
