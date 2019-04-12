@@ -188,7 +188,6 @@ module "build" {
   aws_account_id        = "${signum(length(var.aws_account_id)) == 1 ? var.aws_account_id : data.aws_caller_identity.default.account_id}"
   image_repo_name       = "${var.image_repo_name}"
   image_tag             = "${var.image_tag}"
-  github_token          = "${var.github_oauth_token}"
   environment_variables = "${var.environment_variables}"
   badge_enabled         = "${var.badge_enabled}"
 }
