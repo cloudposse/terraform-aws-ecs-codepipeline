@@ -9,7 +9,7 @@ output "webhook_id" {
 }
 
 output "webhook_url" {
-  description = "The CodePipeline webhook's URL. POST events to this endpoint to trigger the target."
+  description = "The CodePipeline webhook's URL. POST events to this endpoint to trigger the target"
   value       = "${local.webhook_url}"
   sensitive   = true
 }

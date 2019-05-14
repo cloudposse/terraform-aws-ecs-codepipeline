@@ -306,7 +306,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.1.1"
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.3.0"
   enabled              = "${local.enabled && var.webhook_enabled == "true" ? "true" : "false"}"
   github_organization  = "${var.repo_owner}"
   github_repositories  = ["${var.repo_name}"]
@@ -314,6 +314,5 @@ module "github_webhooks" {
   webhook_url          = "${local.webhook_url}"
   webhook_secret       = "${local.webhook_secret}"
   webhook_content_type = "json"
-  name                 = "web"
   events               = ["${var.github_webhook_events}"]
 }

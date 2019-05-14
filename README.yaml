@@ -63,7 +63,7 @@ usage: |-
   In this example, we'll trigger the pipeline anytime the `master` branch is updated.
   ```hcl
   module "ecs_push_pipeline" {
-    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
     name               = "app"
     namespace          = "eg"
     stage              = "staging"
@@ -83,7 +83,7 @@ usage: |-
 
   ```hcl
   module "ecs_release_pipeline" {
-    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
     name               = "app"
     namespace          = "eg"
     stage              = "staging"
@@ -106,7 +106,7 @@ usage: |-
 # Example usage
 examples: |-
   Complete usage can be seen in the [terraform-aws-ecs-web-app](https://github.com/cloudposse/terraform-aws-ecs-web-app/blob/master/main.tf) module.
-  
+
   ## Example Buildspec
 
   Here's an example `buildspec.yaml`. Stick this in the root of your project repository.
