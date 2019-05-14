@@ -43,12 +43,17 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 ## Usage
 
 
+**IMPORTANT:** The `master` branch is used in `source` just as an example. In your code, do not pin to `master` because there may be breaking changes between releases.
+Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases).
+
+
+
 ### Trigger on GitHub Push
 
 In this example, we'll trigger the pipeline anytime the `master` branch is updated.
 ```hcl
 module "ecs_push_pipeline" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
   name               = "app"
   namespace          = "eg"
   stage              = "staging"
@@ -68,7 +73,7 @@ In this example, we'll trigger anytime a new GitHub release is cut by setting th
 
 ```hcl
 module "ecs_release_pipeline" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=tags/0.1.2"
+  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
   name               = "app"
   namespace          = "eg"
   stage              = "staging"
@@ -180,7 +185,7 @@ Available targets:
 |------|-------------|
 | badge_url | The URL of the build badge when badge_enabled is enabled |
 | webhook_id | The CodePipeline webhook's ARN. |
-| webhook_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target. |
+| webhook_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
 
 
 
