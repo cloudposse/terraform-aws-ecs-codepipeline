@@ -29,11 +29,19 @@ variable "service_name" {
 }
 
 variable "github_oauth_token" {
-  description = "GitHub Oauth Token with permissions to access private repositories"
+  type        = "string"
+  description = "GitHub OAuth Token with permissions to access private repositories"
+}
+
+variable "github_webhooks_token" {
+  type        = "string"
+  default     = ""
+  description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable"
 }
 
 variable "github_webhook_events" {
-  description = "A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/)."
+  description = "A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/)"
+  type        = "list"
   default     = ["push"]
 }
 
@@ -165,4 +173,9 @@ variable "webhook_filter_json_path" {
 variable "webhook_filter_match_equals" {
   description = "The value to match on (e.g. refs/heads/{Branch})"
   default     = "refs/heads/{Branch}"
+}
+
+variable "s3_bucket_force_destroy" {
+  description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
+  default     = false
 }

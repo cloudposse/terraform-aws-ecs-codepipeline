@@ -73,19 +73,19 @@ In this example, we'll trigger anytime a new GitHub release is cut by setting th
 
 ```hcl
 module "ecs_release_pipeline" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
-  name               = "app"
-  namespace          = "eg"
-  stage              = "staging"
-  github_oauth_token = "xxxxxxxxxxxxxx"
-  repo_owner         = "cloudposse"
-  repo_name          = "example"
-  branch             = "master"
-  service_name       = "example"
-  ecs_cluster_name   = "example-ecs-cluster"
-  privileged_mode    = "true"
-  github_webhook_events = ["release"]
-  webhook_filter_json_path = "$.action"
+  source                      = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
+  name                        = "app"
+  namespace                   = "eg"
+  stage                       = "staging"
+  github_oauth_token          = "xxxxxxxxxxxxxx"
+  repo_owner                  = "cloudposse"
+  repo_name                   = "example"
+  branch                      = "master"
+  service_name                = "example"
+  ecs_cluster_name            = "example-ecs-cluster"
+  privileged_mode             = "true"
+  github_webhook_events       = ["release"]
+  webhook_filter_json_path    = "$.action"
   webhook_filter_match_equals = "published"
 }
 ```
@@ -160,8 +160,9 @@ Available targets:
 | ecs_cluster_name | ECS Cluster Name | string | - | yes |
 | enabled | Enable `CodePipeline` creation | string | `true` | no |
 | environment_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build. | list | `<list>` | no |
-| github_oauth_token | GitHub Oauth Token with permissions to access private repositories | string | - | yes |
-| github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/). | list | `<list>` | no |
+| github_oauth_token | GitHub OAuth Token with permissions to access private repositories | string | - | yes |
+| github_webhook_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/) | list | `<list>` | no |
+| github_webhooks_token | GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable | string | `` | no |
 | image_repo_name | ECR repository name to store the Docker image built by this module. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `UNSET` | no |
 | image_tag | Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | string | `latest` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | string | `app` | no |
@@ -170,6 +171,7 @@ Available targets:
 | privileged_mode | If set to true, enables running the Docker daemon inside a Docker container on the CodeBuild instance. Used when building Docker images | string | `false` | no |
 | repo_name | GitHub repository name of the application to be built and deployed to ECS. | string | - | yes |
 | repo_owner | GitHub Organization or Username. | string | - | yes |
+| s3_bucket_force_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | string | `false` | no |
 | service_name | ECS Service Name | string | - | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', or 'test' | string | `default` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit', 'XYZ')` | map | `<map>` | no |
