@@ -13,10 +13,11 @@ module "codepipeline_label" {
 }
 
 resource "aws_s3_bucket" "default" {
-  count  = "${local.enabled ? 1 : 0}"
-  bucket = "${module.codepipeline_label.id}"
-  acl    = "private"
-  tags   = "${module.codepipeline_label.tags}"
+  count         = "${local.enabled ? 1 : 0}"
+  bucket        = "${module.codepipeline_label.id}"
+  acl           = "private"
+  force_destroy = "${var.s3_bucket_force_destroy}"
+  tags          = "${module.codepipeline_label.tags}"
 }
 
 module "codepipeline_assume_label" {
@@ -171,7 +172,7 @@ data "aws_caller_identity" "default" {}
 data "aws_region" "default" {}
 
 module "build" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.12.1"
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.16.0"
   enabled               = "${var.enabled}"
   namespace             = "${var.namespace}"
   name                  = "${var.name}"
@@ -306,11 +307,11 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.3.0"
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.4.0"
   enabled              = "${local.enabled && var.webhook_enabled == "true" ? "true" : "false"}"
   github_organization  = "${var.repo_owner}"
   github_repositories  = ["${var.repo_name}"]
-  github_token         = "${var.github_oauth_token}"
+  github_token         = "${var.github_webhooks_token}"
   webhook_url          = "${local.webhook_url}"
   webhook_secret       = "${local.webhook_secret}"
   webhook_content_type = "json"

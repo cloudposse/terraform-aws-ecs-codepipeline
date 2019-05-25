@@ -83,19 +83,19 @@ usage: |-
 
   ```hcl
   module "ecs_release_pipeline" {
-    source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
-    name               = "app"
-    namespace          = "eg"
-    stage              = "staging"
-    github_oauth_token = "xxxxxxxxxxxxxx"
-    repo_owner         = "cloudposse"
-    repo_name          = "example"
-    branch             = "master"
-    service_name       = "example"
-    ecs_cluster_name   = "example-ecs-cluster"
-    privileged_mode    = "true"
-    github_webhook_events = ["release"]
-    webhook_filter_json_path = "$.action"
+    source                      = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
+    name                        = "app"
+    namespace                   = "eg"
+    stage                       = "staging"
+    github_oauth_token          = "xxxxxxxxxxxxxx"
+    repo_owner                  = "cloudposse"
+    repo_name                   = "example"
+    branch                      = "master"
+    service_name                = "example"
+    ecs_cluster_name            = "example-ecs-cluster"
+    privileged_mode             = "true"
+    github_webhook_events       = ["release"]
+    webhook_filter_json_path    = "$.action"
     webhook_filter_match_equals = "published"
   }
   ```
