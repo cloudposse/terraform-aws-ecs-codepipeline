@@ -196,7 +196,7 @@ module "build" {
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
   count      = "${local.enabled ? 1 : 0}"
-  role       = "${module.build.role_arn}"
+  role       = "${module.build.role_id}"
   policy_arn = "${aws_iam_policy.s3.arn}"
 }
 
