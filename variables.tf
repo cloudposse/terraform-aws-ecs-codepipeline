@@ -155,12 +155,7 @@ variable "environment_variables" {
       value = string
   }))
 
-  default = [
-    {
-      name  = "NO_ADDITIONAL_BUILD_VARS"
-      value = "TRUE"
-  }]
-
+  default     = []
   description = "A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build"
 }
 
