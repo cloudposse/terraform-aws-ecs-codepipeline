@@ -53,8 +53,8 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_iam_role_policy_attachment" "default" {
   count      = var.enabled ? 1 : 0
-  role       = aws_iam_role.default[0].id
-  policy_arn = aws_iam_policy.default[0].arn
+  role       = join("", aws_iam_role.default.*.id)
+  policy_arn = join("", aws_iam_policy.default.*.arn)
 }
 
 resource "aws_iam_policy" "default" {
@@ -88,8 +88,8 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_iam_role_policy_attachment" "s3" {
   count      = var.enabled ? 1 : 0
-  role       = aws_iam_role.default[0].id
-  policy_arn = aws_iam_policy.s3[0].arn
+  role       = join("", aws_iam_role.default.*.id)
+  policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
 module "codepipeline_s3_policy_label" {
@@ -106,7 +106,7 @@ module "codepipeline_s3_policy_label" {
 resource "aws_iam_policy" "s3" {
   count  = var.enabled ? 1 : 0
   name   = module.codepipeline_s3_policy_label.id
-  policy = data.aws_iam_policy_document.s3[0].json
+  policy = join("", data.aws_iam_policy_document.s3.*.json)
 }
 
 data "aws_iam_policy_document" "s3" {
@@ -123,8 +123,8 @@ data "aws_iam_policy_document" "s3" {
     ]
 
     resources = [
-      aws_s3_bucket.default[0].arn,
-      "${aws_s3_bucket.default[0].arn}/*"
+      join("", aws_s3_bucket.default.*.arn),
+      "${join("", aws_s3_bucket.default.*.arn)}/*"
     ]
 
     effect = "Allow"
@@ -133,8 +133,8 @@ data "aws_iam_policy_document" "s3" {
 
 resource "aws_iam_role_policy_attachment" "codebuild" {
   count      = var.enabled ? 1 : 0
-  role       = aws_iam_role.default[0].id
-  policy_arn = aws_iam_policy.codebuild[0].arn
+  role       = join("", aws_iam_role.default.*.id)
+  policy_arn = join("", aws_iam_policy.codebuild.*.arn)
 }
 
 module "codebuild_label" {
@@ -199,16 +199,16 @@ module "codebuild" {
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
   count      = var.enabled ? 1 : 0
   role       = module.codebuild.role_id
-  policy_arn = aws_iam_policy.s3[0].arn
+  policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
 resource "aws_codepipeline" "default" {
   count    = var.enabled ? 1 : 0
   name     = module.codepipeline_label.id
-  role_arn = aws_iam_role.default[0].arn
+  role_arn = join("", aws_iam_role.default.*.arn)
 
   artifact_store {
-    location = aws_s3_bucket.default[0].bucket
+    location = join("", aws_s3_bucket.default.*.bucket)
     type     = "S3"
   }
 
