@@ -32,7 +32,7 @@
 | tags | Additional tags (_e.g._ { BusinessUnit : ABC }) | map(string) | `<map>` | no |
 | webhook_authentication | The type of authentication to use. One of IP, GITHUB_HMAC, or UNAUTHENTICATED | string | `GITHUB_HMAC` | no |
 | webhook_enabled | Set to false to prevent the module from creating any webhook resources | bool | `true` | no |
-| webhook_filter_json_path | The JSON path to filter on. | string | `$.ref` | no |
+| webhook_filter_json_path | The JSON path to filter on | string | `$.ref` | no |
 | webhook_filter_match_equals | The value to match on (e.g. refs/heads/{Branch}) | string | `refs/heads/{Branch}` | no |
 | webhook_target_action | The name of the action in a pipeline you want to connect to the webhook. The action must be from the source (first) stage of the pipeline | string | `Source` | no |
 

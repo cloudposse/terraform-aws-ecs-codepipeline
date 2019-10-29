@@ -10,11 +10,75 @@ name = "ecs-codepipeline"
 
 vpc_cidr_block = "172.16.0.0/16"
 
-github_oauth_token = "test"
+ecs_launch_type = "FARGATE"
 
-github_webhooks_token = "test"
+network_mode = "awsvpc"
 
-github_webhook_events = ["push", "release"]
+ignore_changes_task_definition = true
+
+assign_public_ip = false
+
+propagate_tags = "TASK_DEFINITION"
+
+deployment_minimum_healthy_percent = 100
+
+deployment_maximum_percent = 200
+
+deployment_controller_type = "ECS"
+
+desired_count = 1
+
+task_memory = 512
+
+task_cpu = 256
+
+container_name = "geodesic"
+
+container_image = "cloudposse/geodesic"
+
+container_memory = 256
+
+container_memory_reservation = 128
+
+container_cpu = 256
+
+container_essential = true
+
+container_readonly_root_filesystem = false
+
+container_environment = [
+  {
+    name  = "string_var"
+    value = "I am a string"
+  },
+  {
+    name  = "true_boolean_var"
+    value = true
+  },
+  {
+    name  = "false_boolean_var"
+    value = false
+  },
+  {
+    name  = "integer_var"
+    value = 42
+  }
+]
+
+container_port_mappings = [
+  {
+    containerPort = 80
+    hostPort      = 80
+    protocol      = "tcp"
+  },
+  {
+    containerPort = 443
+    hostPort      = 443
+    protocol      = "udp"
+  }
+]
+
+github_oauth_token = ""
 
 repo_owner = "cloudposse"
 
@@ -36,15 +100,7 @@ image_repo_name = "terraform-aws-ecs-codepipeline"
 
 image_tag = "latest"
 
-webhook_enabled = true
-
-webhook_target_action = "Source"
-
-webhook_authentication = "GITHUB_HMAC"
-
-webhook_filter_json_path = "$.ref"
-
-webhook_filter_match_equals = "refs/heads/{Branch}"
+webhook_enabled = false
 
 s3_bucket_force_destroy = true
 

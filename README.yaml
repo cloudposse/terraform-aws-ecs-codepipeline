@@ -76,7 +76,7 @@ usage: |-
     repo_name          = "example"
     branch             = "master"
     service_name       = "example"
-    ecs_cluster_name   = "example-ecs-cluster"
+    ecs_cluster_name   = "eg-staging-example-cluster"
     privileged_mode    = "true"
   }
   ```
@@ -96,15 +96,15 @@ usage: |-
     repo_name                   = "example"
     branch                      = "master"
     service_name                = "example"
-    ecs_cluster_name            = "example-ecs-cluster"
+    ecs_cluster_name            = "eg-staging-example-cluster"
     privileged_mode             = "true"
     github_webhook_events       = ["release"]
     webhook_filter_json_path    = "$.action"
     webhook_filter_match_equals = "published"
   }
   ```
-  (Thanks to [Stack Overflow](https://stackoverflow.com/questions/52516087/trigger-aws-codepipeline-by-github-release-webhook#comment91997146_52524711))
 
+  (Thanks to [Stack Overflow](https://stackoverflow.com/questions/52516087/trigger-aws-codepipeline-by-github-release-webhook#comment91997146_52524711))
 
 
 # Example usage
