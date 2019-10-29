@@ -61,8 +61,8 @@ variable "github_webhooks_token" {
 }
 
 variable "github_webhook_events" {
-  description = "A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/)"
   type        = list(string)
+  description = "A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/)"
   default     = ["push"]
 }
 
@@ -179,7 +179,7 @@ variable "webhook_authentication" {
 
 variable "webhook_filter_json_path" {
   type        = string
-  description = "The JSON path to filter on."
+  description = "The JSON path to filter on"
   default     = "$.ref"
 }
 
