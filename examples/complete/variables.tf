@@ -1,13 +1,26 @@
+variable "region" {
+  type        = string
+  description = "AWS Region for S3 bucket"
+}
+
+variable "availability_zones" {
+  type        = list(string)
+  description = "List of availability zones"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "VPC CIDR block"
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace (e.g. `eg` or `cp`)"
-  default     = ""
 }
 
 variable "stage" {
   type        = string
   description = "Stage (e.g. `prod`, `dev`, `staging`)"
-  default     = ""
 }
 
 variable "name" {
@@ -33,12 +46,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "enabled" {
-  type        = bool
-  default     = true
-  description = "Enable `CodePipeline` creation"
-}
-
 variable "ecs_cluster_name" {
   type        = string
   description = "ECS Cluster Name"
@@ -56,7 +63,6 @@ variable "github_oauth_token" {
 
 variable "github_webhooks_token" {
   type        = string
-  default     = ""
   description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable"
 }
 
@@ -79,12 +85,6 @@ variable "repo_name" {
 variable "branch" {
   type        = string
   description = "Branch of the GitHub repository, _e.g._ `master`"
-}
-
-variable "badge_enabled" {
-  type        = bool
-  default     = false
-  description = "Generates a publicly-accessible URL for the projects build badge. Available as badge_url attribute when enabled"
 }
 
 variable "build_image" {
@@ -123,11 +123,6 @@ variable "privileged_mode" {
   type        = bool
   default     = false
   description = "If set to true, enables running the Docker daemon inside a Docker container on the CodeBuild instance. Used when building Docker images"
-}
-
-variable "region" {
-  type        = string
-  description = "AWS Region, e.g. us-east-1. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html)"
 }
 
 variable "aws_account_id" {
