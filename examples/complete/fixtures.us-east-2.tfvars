@@ -78,7 +78,9 @@ container_port_mappings = [
   }
 ]
 
-github_oauth_token = ""
+github_oauth_token = "test"
+
+github_webhooks_token = "test"
 
 repo_owner = "cloudposse"
 
@@ -94,7 +96,7 @@ build_timeout = 60
 
 poll_source_changes = false
 
-privileged_mode = false
+privileged_mode = true
 
 image_repo_name = "terraform-aws-ecs-codepipeline"
 

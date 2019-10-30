@@ -113,10 +113,10 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	codebuildCacheS3BucketName := terraform.Output(t, terraformOptions, "codebuild_cache_bucket_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-build", codebuildCacheS3BucketName)
+	assert.Contains(t, codebuildCacheS3BucketName, "eg-test-ecs-codepipeline-build")
 
 	// Run `terraform output` to get the value of an output variable
 	codepipelineId := terraform.Output(t, terraformOptions, "codepipeline_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline", codepipelineId)
+	assert.Equal(t, "eg-test-ecs-codepipeline-codepipeline", codepipelineId)
 }

@@ -50,24 +50,25 @@ Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest re
 
 For a complete example, see [examples/complete](examples/complete).
 
-For automated test of the complete example using `bats` and `Terratest`, see [test](test).
+For automated tests of the complete example using `bats` and `Terratest`, see [test](test).
 
 ### Trigger on GitHub Push
 
 In this example, we'll trigger the pipeline anytime the `master` branch is updated.
 ```hcl
 module "ecs_push_pipeline" {
-  source             = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
-  name               = "app"
-  namespace          = "eg"
-  stage              = "staging"
-  github_oauth_token = "xxxxxxxxxxxxxx"
-  repo_owner         = "cloudposse"
-  repo_name          = "example"
-  branch             = "master"
-  service_name       = "example"
-  ecs_cluster_name   = "eg-staging-example-cluster"
-  privileged_mode    = "true"
+  source                = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
+  name                  = "app"
+  namespace             = "eg"
+  stage                 = "staging"
+  github_oauth_token    = "xxxxxxxxxxxxxx"
+  github_webhooks_token = "xxxxxxxxxxxxxx"
+  repo_owner            = "cloudposse"
+  repo_name             = "example"
+  branch                = "master"
+  service_name          = "example"
+  ecs_cluster_name      = "eg-staging-example-cluster"
+  privileged_mode       = "true"
 }
 ```
 
@@ -82,6 +83,7 @@ module "ecs_release_pipeline" {
   namespace                   = "eg"
   stage                       = "staging"
   github_oauth_token          = "xxxxxxxxxxxxxx"
+  github_webhooks_token       = "xxxxxxxxxxxxxx"
   repo_owner                  = "cloudposse"
   repo_name                   = "example"
   branch                      = "master"

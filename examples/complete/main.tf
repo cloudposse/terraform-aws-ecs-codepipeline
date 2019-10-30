@@ -91,6 +91,7 @@ module "ecs_codepipeline" {
   name                    = var.name
   region                  = var.region
   github_oauth_token      = var.github_oauth_token
+  github_webhooks_token   = var.github_webhooks_token
   repo_owner              = var.repo_owner
   repo_name               = var.repo_name
   branch                  = var.branch
