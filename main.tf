@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "assume_role" {
     sid = ""
 
     actions = [
-      "sts:AssumeRole",
+      "sts:AssumeRole"
     ]
 
     principals {
@@ -140,7 +140,7 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 module "codebuild_label" {
   source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
   enabled    = var.enabled
-  attributes = [compact(concat(var.attributes, ["codebuild"]))]
+  attributes = compact(concat(var.attributes, ["codebuild"]))
   delimiter  = var.delimiter
   name       = var.name
   namespace  = var.namespace
@@ -317,5 +317,5 @@ module "github_webhooks" {
   webhook_url          = local.webhook_url
   webhook_secret       = local.webhook_secret
   webhook_content_type = "json"
-  events               = [var.github_webhook_events]
+  events               = var.github_webhook_events
 }
