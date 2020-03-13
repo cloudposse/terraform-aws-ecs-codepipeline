@@ -38,6 +38,7 @@ resource "aws_iam_role" "default" {
   count              = var.enabled ? 1 : 0
   name               = module.codepipeline_assume_role_label.id
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  tags               = var.tags
   lifecycle {
     create_before_destroy = true
   }
@@ -189,7 +190,7 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.17.0"
+  source                = "git::https://github.com/t-saito-openwork/terraform-aws-codebuild.git?ref=tags/0.20.0"
   enabled               = var.enabled
   namespace             = var.namespace
   name                  = var.name
