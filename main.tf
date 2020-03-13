@@ -15,6 +15,12 @@ resource "aws_s3_bucket" "default" {
   acl           = "private"
   force_destroy = var.s3_bucket_force_destroy
   tags          = module.codepipeline_label.tags
+
+  lifecycle {
+    # Any Terraform plan that includes a destroy of this resource will
+    # result in an error message.
+    prevent_destroy = true
+  }
 }
 
 module "codepipeline_assume_role_label" {
@@ -32,6 +38,9 @@ resource "aws_iam_role" "default" {
   count              = var.enabled ? 1 : 0
   name               = module.codepipeline_assume_role_label.id
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -55,12 +64,18 @@ resource "aws_iam_role_policy_attachment" "default" {
   count      = var.enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.default.*.arn)
+  depends_on = [
+    aws_iam_role.default
+  ]
 }
 
 resource "aws_iam_policy" "default" {
   count  = var.enabled ? 1 : 0
   name   = module.codepipeline_label.id
   policy = data.aws_iam_policy_document.default.json
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "aws_iam_policy_document" "default" {
