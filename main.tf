@@ -222,6 +222,7 @@ resource "aws_codepipeline" "default" {
   count    = var.enabled ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
+  tags     = module.codepipeline_label.tags
 
   artifact_store {
     location = join("", aws_s3_bucket.default.*.bucket)
