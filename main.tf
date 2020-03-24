@@ -190,7 +190,7 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/t-saito-openwork/terraform-aws-codebuild.git?ref=tags/0.20.0"
+  source                = "git::https://github.com/vorkers/terraform-aws-codebuild.git?ref=tags/0.20.0"
   enabled               = var.enabled
   namespace             = var.namespace
   name                  = var.name
