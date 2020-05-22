@@ -174,7 +174,7 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.17.0"
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.19.0"
   enabled               = var.enabled
   namespace             = var.namespace
   name                  = var.name
@@ -309,7 +309,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.5.0"
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.6.0"
   enabled              = var.enabled && var.webhook_enabled ? true : false
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
