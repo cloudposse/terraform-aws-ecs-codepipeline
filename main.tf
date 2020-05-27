@@ -241,6 +241,8 @@ module "codebuild" {
   github_token          = var.github_oauth_token
   environment_variables = var.environment_variables
   badge_enabled         = var.badge_enabled
+  cache_type            = var.cache_type
+  local_cache_modes     = var.local_cache_modes
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
@@ -327,7 +329,7 @@ resource "aws_codepipeline" "default" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
 resource "aws_codepipeline" "bitbucket" {
-  count    = var.enabled && var.codestar_connection_arn != null ? 1 : 0
+  count    = var.enabled && var.codestar_connection_arn != "" ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
 
@@ -433,7 +435,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.6.0"
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.7.0"
   enabled              = var.enabled && var.webhook_enabled ? true : false
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]

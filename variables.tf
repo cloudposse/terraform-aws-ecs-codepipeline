@@ -200,3 +200,15 @@ variable "codestar_connection_arn" {
   description = "CodeStar connection ARN required for Bitbucket integration with CodePipeline"
   default     = ""
 }
+
+variable "cache_type" {
+  type        = string
+  default     = "NO_CACHE"
+  description = "The type of storage that will be used for the AWS CodeBuild project cache. Valid values: NO_CACHE, LOCAL, and S3.  Defaults to NO_CACHE.  If cache_type is S3, it will create an S3 bucket for storing codebuild cache inside"
+}
+
+variable "local_cache_modes" {
+  type        = list(string)
+  default     = []
+  description = "Specifies settings that AWS CodeBuild uses to store and reuse build dependencies. Valid values: LOCAL_SOURCE_CACHE, LOCAL_DOCKER_LAYER_CACHE, and LOCAL_CUSTOM_CACHE"
+}
