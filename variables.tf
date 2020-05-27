@@ -52,6 +52,7 @@ variable "service_name" {
 variable "github_oauth_token" {
   type        = string
   description = "GitHub OAuth Token with permissions to access private repositories"
+  default     = ""
 }
 
 variable "github_webhooks_token" {
@@ -192,4 +193,10 @@ variable "s3_bucket_force_destroy" {
   type        = bool
   description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
   default     = false
+}
+
+variable "codestar_connection_arn" {
+  type        = string
+  description = "CodeStar connection ARN required for Bitbucket integration with CodePipeline"
+  default     = ""
 }
