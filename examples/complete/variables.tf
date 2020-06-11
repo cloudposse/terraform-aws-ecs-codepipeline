@@ -159,11 +159,6 @@ variable "github_oauth_token" {
   description = "GitHub OAuth Token with permissions to access private repositories"
 }
 
-variable "github_webhooks_token" {
-  type        = string
-  description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable"
-}
-
 variable "repo_owner" {
   type        = string
   description = "GitHub Organization or Username"
