@@ -41,7 +41,6 @@ init: $(BASE)/vendor
 
 .PHONY : test
 ## Run tests
-test: export TF_VAR_github_webhooks_token=$(GITHUB_TOKEN)
 test: init
 	cd $(BASE) && go test -v -timeout 30m -run TestExamplesComplete
 

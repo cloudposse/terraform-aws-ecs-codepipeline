@@ -80,7 +80,7 @@ container_port_mappings = [
 
 github_oauth_token = "test"
 
-github_webhooks_token = "test"
+#github_webhooks_token = "test"
 
 repo_owner = "cloudposse"
 
