@@ -314,6 +314,7 @@ module "github_webhooks" {
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
   github_token         = var.github_webhooks_token
+  github_anonymous     = var.github_webhooks_anonymous
   webhook_url          = local.webhook_url
   webhook_secret       = local.webhook_secret
   webhook_content_type = "json"
