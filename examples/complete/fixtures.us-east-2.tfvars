@@ -106,6 +106,8 @@ webhook_enabled = false
 
 s3_bucket_force_destroy = true
 
+cache_type = "S3"
+
 environment_variables = [
   {
     name  = "APP_URL"
