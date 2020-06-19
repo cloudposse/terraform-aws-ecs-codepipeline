@@ -24,7 +24,7 @@ module "vpc" {
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.16.1"
+  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.19.0"
   availability_zones   = var.availability_zones
   namespace            = var.namespace
   stage                = var.stage
@@ -91,7 +91,6 @@ module "ecs_codepipeline" {
   name                    = var.name
   region                  = var.region
   github_oauth_token      = var.github_oauth_token
-  github_webhooks_token   = var.github_webhooks_token
   repo_owner              = var.repo_owner
   repo_name               = var.repo_name
   branch                  = var.branch

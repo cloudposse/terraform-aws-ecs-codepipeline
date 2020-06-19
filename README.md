@@ -42,7 +42,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-ecs-codepipeline [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-ecs-codepipeline?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5db7b474041f802a8893f018) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg)](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-ecs-codepipeline [![GitHub Action Tests](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/workflows/test/badge.svg?branch=master)](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/actions) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg)](https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform Module for CI/CD with AWS Code Pipeline using GitHub webhook triggers and Code Build for ECS.
