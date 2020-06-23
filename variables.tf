@@ -49,6 +49,12 @@ variable "service_name" {
   description = "ECS Service Name"
 }
 
+variable "github_anonymous" {
+  type        = bool
+  description = "Github Anonymous API (if `true`, token must not be set as GITHUB_TOKEN or `github_token`)"
+  default     = false
+}
+
 variable "github_oauth_token" {
   type        = string
   description = "GitHub OAuth Token with permissions to access private repositories"
