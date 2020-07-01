@@ -8,6 +8,7 @@ provider "github" {
   token        = var.github_token != "" ? var.github_token : null
   organization = var.repo_owner
   anonymous    = var.github_anonymous
+  alias        = "github"
 }
 
 module "codepipeline_label" {
@@ -457,4 +458,7 @@ module "github_webhooks" {
   webhook_secret       = local.webhook_secret
   webhook_content_type = "json"
   events               = var.github_webhook_events
+  providers = {
+    github = github.github
+  }
 }
