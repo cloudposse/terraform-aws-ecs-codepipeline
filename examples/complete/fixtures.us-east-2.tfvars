@@ -78,6 +78,10 @@ container_port_mappings = [
   }
 ]
 
+github_oauth_token = "test"
+
+github_webhooks_token = "test"
+
 github_anonymous = true
 
 repo_owner = "cloudposse"
@@ -103,8 +107,6 @@ image_tag = "latest"
 webhook_enabled = false
 
 s3_bucket_force_destroy = true
-
-cache_type = "S3"
 
 environment_variables = [
   {
