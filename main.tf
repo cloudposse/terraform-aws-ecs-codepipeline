@@ -1,3 +1,15 @@
+terraform {
+  required_providers {
+    github = "~> 2.8.0"
+  }
+}
+
+provider "github" {
+  token        = var.github_token != "" ? var.github_token : null
+  organization = var.repo_owner
+  anonymous    = var.github_anonymous
+}
+
 module "codepipeline_label" {
   source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
   enabled    = var.enabled
