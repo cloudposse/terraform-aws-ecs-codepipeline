@@ -225,7 +225,6 @@ Available targets:
 | ecs\_cluster\_name | ECS Cluster Name | `string` | n/a | yes |
 | enabled | Enable `CodePipeline` creation | `bool` | `true` | no |
 | environment\_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build | <pre>list(object(<br>    {<br>      name  = string<br>      value = string<br>  }))</pre> | `[]` | no |
-| github\_oauth\_token | GitHub OAuth Token with permissions to access private repositories | `string` | n/a | yes |
 | github\_anonymous | Github Anonymous API (if `true`, token must not be set as GITHUB\_TOKEN or `github_token`) | `bool` | `false` | no |
 | github\_oauth\_token | GitHub OAuth Token with permissions to access private repositories | `string` | `""` | no |
 | github\_webhook\_events | A list of events which should trigger the webhook. See a list of [available events](https://developer.github.com/v3/activity/events/types/) | `list(string)` | <pre>[<br>  "push"<br>]</pre> | no |
