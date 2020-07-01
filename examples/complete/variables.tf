@@ -159,6 +159,12 @@ variable "github_oauth_token" {
   description = "GitHub OAuth Token with permissions to access private repositories"
 }
 
+variable "github_anonymous" {
+  type        = bool
+  description = "Github Anonymous API (if `true`, token must not be set as GITHUB_TOKEN or `github_token`)"
+  default     = false
+}
+
 variable "repo_owner" {
   type        = string
   description = "GitHub Organization or Username"
