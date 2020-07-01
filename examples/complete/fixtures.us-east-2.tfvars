@@ -80,8 +80,6 @@ container_port_mappings = [
 
 github_oauth_token = "test"
 
-github_webhooks_token = "test"
-
 repo_owner = "cloudposse"
 
 repo_name = "terraform-aws-ecs-codepipeline"
@@ -105,6 +103,8 @@ image_tag = "latest"
 webhook_enabled = false
 
 s3_bucket_force_destroy = true
+
+cache_type = "S3"
 
 environment_variables = [
   {
