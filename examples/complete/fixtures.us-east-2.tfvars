@@ -78,6 +78,8 @@ container_port_mappings = [
   }
 ]
 
+github_oauth_token = ""
+
 github_anonymous = true
 
 repo_owner = "cloudposse"
