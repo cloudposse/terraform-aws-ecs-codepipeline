@@ -1,12 +1,13 @@
 module "codepipeline_label" {
-  source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  enabled    = var.enabled
-  attributes = compact(concat(var.attributes, ["codepipeline"]))
-  delimiter  = var.delimiter
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  enabled     = var.enabled
+  attributes  = compact(concat(var.attributes, ["codepipeline"]))
+  delimiter   = var.delimiter
+  name        = var.name
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  tags        = var.tags
 }
 
 resource "aws_s3_bucket" "default" {
@@ -18,14 +19,15 @@ resource "aws_s3_bucket" "default" {
 }
 
 module "codepipeline_assume_role_label" {
-  source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  enabled    = var.enabled
-  attributes = compact(concat(var.attributes, ["codepipeline", "assume"]))
-  delimiter  = var.delimiter
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  enabled     = var.enabled
+  attributes  = compact(concat(var.attributes, ["codepipeline", "assume"]))
+  delimiter   = var.delimiter
+  name        = var.name
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  tags        = var.tags
 }
 
 resource "aws_iam_role" "default" {
@@ -93,14 +95,15 @@ resource "aws_iam_role_policy_attachment" "s3" {
 }
 
 module "codepipeline_s3_policy_label" {
-  source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  enabled    = var.enabled
-  attributes = compact(concat(var.attributes, ["codepipeline", "s3"]))
-  delimiter  = var.delimiter
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  enabled     = var.enabled
+  attributes  = compact(concat(var.attributes, ["codepipeline", "s3"]))
+  delimiter   = var.delimiter
+  name        = var.name
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  tags        = var.tags
 }
 
 resource "aws_iam_policy" "s3" {
@@ -138,14 +141,15 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 }
 
 module "codebuild_label" {
-  source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  enabled    = var.enabled
-  attributes = compact(concat(var.attributes, ["codebuild"]))
-  delimiter  = var.delimiter
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  enabled     = var.enabled
+  attributes  = compact(concat(var.attributes, ["codebuild"]))
+  delimiter   = var.delimiter
+  name        = var.name
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  tags        = var.tags
 }
 
 resource "aws_iam_policy" "codebuild" {
@@ -175,14 +179,15 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 }
 
 module "codestar_label" {
-  source     = "github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
-  enabled    = var.enabled && var.codestar_connection_arn != ""
-  attributes = compact(concat(var.attributes, ["codestar"]))
-  delimiter  = var.delimiter
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  enabled     = var.enabled && var.codestar_connection_arn != ""
+  attributes  = compact(concat(var.attributes, ["codestar"]))
+  delimiter   = var.delimiter
+  name        = var.name
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  tags        = var.tags
 }
 
 resource "aws_iam_policy" "codestar" {
@@ -221,7 +226,7 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.21.0"
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.23.0"
   enabled               = var.enabled
   namespace             = var.namespace
   name                  = var.name
@@ -435,7 +440,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.8.0"
+  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.10.0"
   enabled              = var.enabled && var.webhook_enabled ? true : false
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner

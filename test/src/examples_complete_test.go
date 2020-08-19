@@ -58,12 +58,12 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	ecsClusterId := terraform.Output(t, terraformOptions, "ecs_cluster_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "arn:aws:ecs:us-east-2:126450723953:cluster/eg-test-ecs-codepipeline", ecsClusterId)
+	assert.Contains(t, ecsClusterId, "cluster/eg-test-ecs-codepipeline")
 
 	// Run `terraform output` to get the value of an output variable
 	ecsClusterArn := terraform.Output(t, terraformOptions, "ecs_cluster_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "arn:aws:ecs:us-east-2:126450723953:cluster/eg-test-ecs-codepipeline", ecsClusterArn)
+	assert.Contains(t, ecsClusterArn, "cluster/eg-test-ecs-codepipeline")
 
 	// Run `terraform output` to get the value of an output variable
 	ecsExecRolePolicyName := terraform.Output(t, terraformOptions, "ecs_exec_role_policy_name")
@@ -74,11 +74,6 @@ func TestExamplesComplete(t *testing.T) {
 	serviceName := terraform.Output(t, terraformOptions, "service_name")
 	// Verify we're getting back the outputs we expect
 	assert.Equal(t, "eg-test-ecs-codepipeline", serviceName)
-
-	// Run `terraform output` to get the value of an output variable
-	serviceRoleArn := terraform.Output(t, terraformOptions, "service_role_arn")
-	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "arn:aws:iam::126450723953:role/eg-test-ecs-codepipeline-service", serviceRoleArn)
 
 	// Run `terraform output` to get the value of an output variable
 	taskDefinitionFamily := terraform.Output(t, terraformOptions, "task_definition_family")
@@ -93,7 +88,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	taskExecRoleArn := terraform.Output(t, terraformOptions, "task_exec_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "arn:aws:iam::126450723953:role/eg-test-ecs-codepipeline-exec", taskExecRoleArn)
+	assert.Contains(t, taskExecRoleArn, "role/eg-test-ecs-codepipeline-exec")
 
 	// Run `terraform output` to get the value of an output variable
 	taskRoleName := terraform.Output(t, terraformOptions, "task_role_name")
@@ -103,7 +98,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	taskRoleArn := terraform.Output(t, terraformOptions, "task_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "arn:aws:iam::126450723953:role/eg-test-ecs-codepipeline-task", taskRoleArn)
+	assert.Contains(t, taskRoleArn, "role/eg-test-ecs-codepipeline-task")
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildProjectName := terraform.Output(t, terraformOptions, "codebuild_project_name")

@@ -2,7 +2,7 @@
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0, < 0.14.0 |
+| terraform | >= 0.12.0 |
 | aws | ~> 2.0 |
 | local | ~> 1.2 |
 | null | ~> 2.0 |
@@ -33,6 +33,7 @@
 | delimiter | Delimiter between `namespace`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | ecs\_cluster\_name | ECS Cluster Name | `string` | n/a | yes |
 | enabled | Enable `CodePipeline` creation | `bool` | `true` | no |
+| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
 | environment\_variables | A list of maps, that contain both the key 'name' and the key 'value' to be used as additional environment variables for the build | <pre>list(object(<br>    {<br>      name  = string<br>      value = string<br>  }))</pre> | `[]` | no |
 | github\_anonymous | Github Anonymous API (if `true`, token must not be set as GITHUB\_TOKEN or `github_token`) | `bool` | `false` | no |
 | github\_oauth\_token | GitHub OAuth Token with permissions to access private repositories | `string` | `""` | no |
