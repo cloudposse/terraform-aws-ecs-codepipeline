@@ -228,7 +228,6 @@ data "aws_region" "default" {
 module "codebuild" {
   source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.23.0"
   enabled               = var.enabled
-  environment           = var.environment
   namespace             = var.namespace
   name                  = var.name
   stage                 = var.stage

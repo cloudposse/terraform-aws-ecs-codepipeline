@@ -88,6 +88,7 @@ module "ecs_alb_service_task" {
 module "ecs_codepipeline" {
   source                  = "../../"
   namespace               = var.namespace
+  environment             = var.environment
   stage                   = var.stage
   name                    = var.name
   region                  = var.region
