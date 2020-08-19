@@ -3,13 +3,14 @@ provider "aws" {
 }
 
 module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  namespace  = var.namespace
-  name       = var.name
-  stage      = var.stage
-  delimiter  = var.delimiter
-  attributes = var.attributes
-  tags       = var.tags
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  namespace   = var.namespace
+  environment = var.environment
+  stage       = var.stage
+  name        = var.name
+  delimiter   = var.delimiter
+  attributes  = var.attributes
+  tags        = var.tags
 }
 
 module "vpc" {
@@ -65,7 +66,7 @@ module "ecs_alb_service_task" {
   attributes                         = var.attributes
   delimiter                          = var.delimiter
   alb_security_group                 = module.vpc.vpc_default_security_group_id
-  container_definition_json          = module.container_definition.json
+  container_definition_json          = module.container_definition.json_map_encoded_list
   ecs_cluster_arn                    = aws_ecs_cluster.default.arn
   launch_type                        = var.ecs_launch_type
   vpc_id                             = module.vpc.vpc_id
