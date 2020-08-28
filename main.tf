@@ -316,20 +316,25 @@ resource "aws_codepipeline" "default" {
   stage {
     name = "Deploy"
 
-    action {
-      name            = "Deploy"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["task"]
-      version         = "1"
+    dynamic "action" {
+      for_each = local.service_names
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
+      content {
+        name            = "Deploy-${action.value}"
+        category        = "Deploy"
+        owner           = "AWS"
+        provider        = "ECS"
+        input_artifacts = ["task"]
+        version         = "1"
+
+        configuration = {
+          ServiceName = action.value
+          ClusterName = var.ecs_cluster_name
+        }
       }
     }
   }
+
 }
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
@@ -393,17 +398,21 @@ resource "aws_codepipeline" "bitbucket" {
   stage {
     name = "Deploy"
 
-    action {
-      name            = "Deploy"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["task"]
-      version         = "1"
+    dynamic "action" {
+      for_each = local.service_names
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
+      content {
+        name            = "Deploy ${action.value}"
+        category        = "Deploy"
+        owner           = "AWS"
+        provider        = "ECS"
+        input_artifacts = ["task"]
+        version         = "1"
+
+        configuration = {
+          ServiceName = action.value
+          ClusterName = var.ecs_cluster_name
+        }
       }
     }
   }
@@ -418,6 +427,7 @@ resource "random_string" "webhook_secret" {
 }
 
 locals {
+  service_names = compact(concat(var.service_names, [var.service_name]))
   webhook_secret = join("", random_string.webhook_secret.*.result)
   webhook_url    = join("", aws_codepipeline_webhook.webhook.*.url)
 }
