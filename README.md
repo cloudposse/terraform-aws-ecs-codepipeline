@@ -171,6 +171,7 @@ Available targets:
 
 ```
 <!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -249,6 +250,7 @@ Available targets:
 | webhook\_id | The CodePipeline webhook's ID |
 | webhook\_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
 
+<!-- markdownlint-restore -->
 
 
 
