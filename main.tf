@@ -335,6 +335,11 @@ resource "aws_codepipeline" "default" {
     }
   }
 
+  lifecycle {
+    # prevent github OAuthToken from causing updates, since it's removed from state file
+    ignore_changes = [stage[0].action[0].configuration]
+  }
+
 }
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
