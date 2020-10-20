@@ -320,7 +320,7 @@ resource "aws_codepipeline" "default" {
       for_each = local.service_names
 
       content {
-        name            = "Deploy-${action.value}"
+        name            = format("Deploy-%s", action.value)
         category        = "Deploy"
         owner           = "AWS"
         provider        = "ECS"
