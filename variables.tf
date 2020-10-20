@@ -53,12 +53,12 @@ variable "ecs_cluster_name" {
 variable "service_name" {
   type        = string
   description = "ECS Service Names"
-  default = ""
+  default     = ""
 }
 variable "service_names" {
   type        = list(string)
   description = "ECS Service Names"
-  default = []
+  default     = []
 }
 
 variable "github_anonymous" {

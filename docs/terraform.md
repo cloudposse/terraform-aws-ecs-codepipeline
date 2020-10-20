@@ -51,7 +51,8 @@
 | repo\_name | GitHub repository name of the application to be built and deployed to ECS | `string` | n/a | yes |
 | repo\_owner | GitHub Organization or Username | `string` | n/a | yes |
 | s3\_bucket\_force\_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
-| service\_name | ECS Service Name | `string` | n/a | yes |
+| service\_name | ECS Service Names | `string` | `""` | no |
+| service\_names | ECS Service Names | `list(string)` | `[]` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | `string` | `""` | no |
 | tags | Additional tags (\_e.g.\_ { BusinessUnit : ABC }) | `map(string)` | `{}` | no |
 | webhook\_authentication | The type of authentication to use. One of IP, GITHUB\_HMAC, or UNAUTHENTICATED | `string` | `"GITHUB_HMAC"` | no |
