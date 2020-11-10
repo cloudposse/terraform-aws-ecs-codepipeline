@@ -1,6 +1,6 @@
 variable "region" {
   type        = string
-  description = "AWS Region for S3 bucket"
+  description = "AWS Region"
 }
 
 variable "availability_zones" {
@@ -16,6 +16,12 @@ variable "vpc_cidr_block" {
 variable "namespace" {
   type        = string
   description = "Namespace (e.g. `eg` or `cp`)"
+}
+
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
 }
 
 variable "stage" {
