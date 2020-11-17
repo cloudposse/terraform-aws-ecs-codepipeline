@@ -1,17 +1,11 @@
 module "codepipeline_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
   attributes  = compact(concat(var.attributes, ["codepipeline"]))
-  delimiter   = var.delimiter
-  name        = var.name
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  tags        = var.tags
+  context = module.this.context
 }
 
 resource "aws_s3_bucket" "default" {
-  count         = var.enabled ? 1 : 0
+  count         = module.this.enabled ? 1 : 0
   bucket        = module.codepipeline_label.id
   acl           = "private"
   force_destroy = var.s3_bucket_force_destroy
@@ -19,19 +13,13 @@ resource "aws_s3_bucket" "default" {
 }
 
 module "codepipeline_assume_role_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
+  context = module.this.context
   attributes  = compact(concat(var.attributes, ["codepipeline", "assume"]))
-  delimiter   = var.delimiter
-  name        = var.name
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  tags        = var.tags
 }
 
 resource "aws_iam_role" "default" {
-  count              = var.enabled ? 1 : 0
+  count              = module.this.enabled ? 1 : 0
   name               = module.codepipeline_assume_role_label.id
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
@@ -54,13 +42,13 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
-  count      = var.enabled ? 1 : 0
+  count      = module.this.enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.default.*.arn)
 }
 
 resource "aws_iam_policy" "default" {
-  count  = var.enabled ? 1 : 0
+  count  = module.this.enabled ? 1 : 0
   name   = module.codepipeline_label.id
   policy = data.aws_iam_policy_document.default.json
 }
@@ -89,31 +77,25 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3" {
-  count      = var.enabled ? 1 : 0
+  count      = module.this.enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
 module "codepipeline_s3_policy_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
   attributes  = compact(concat(var.attributes, ["codepipeline", "s3"]))
-  delimiter   = var.delimiter
-  name        = var.name
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  tags        = var.tags
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "s3" {
-  count  = var.enabled ? 1 : 0
+  count  = module.this.enabled ? 1 : 0
   name   = module.codepipeline_s3_policy_label.id
   policy = join("", data.aws_iam_policy_document.s3.*.json)
 }
 
 data "aws_iam_policy_document" "s3" {
-  count = var.enabled ? 1 : 0
+  count = module.this.enabled ? 1 : 0
 
   statement {
     sid = ""
@@ -135,25 +117,19 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild" {
-  count      = var.enabled ? 1 : 0
+  count      = module.this.enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.codebuild.*.arn)
 }
 
 module "codebuild_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled
+  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
   attributes  = compact(concat(var.attributes, ["codebuild"]))
-  delimiter   = var.delimiter
-  name        = var.name
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  tags        = var.tags
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "codebuild" {
-  count  = var.enabled ? 1 : 0
+  count  = module.this.enabled ? 1 : 0
   name   = module.codebuild_label.id
   policy = data.aws_iam_policy_document.codebuild.json
 }
@@ -173,31 +149,26 @@ data "aws_iam_policy_document" "codebuild" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/connections-permissions.html
 resource "aws_iam_role_policy_attachment" "codestar" {
-  count      = var.enabled && var.codestar_connection_arn != "" ? 1 : 0
+  count      = module.this.enabled && var.codestar_connection_arn != "" ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.codestar.*.arn)
 }
 
 module "codestar_label" {
   source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled     = var.enabled && var.codestar_connection_arn != ""
+  enabled     = module.this.enabled && var.codestar_connection_arn != ""
   attributes  = compact(concat(var.attributes, ["codestar"]))
-  delimiter   = var.delimiter
-  name        = var.name
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  tags        = var.tags
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "codestar" {
-  count  = var.enabled && var.codestar_connection_arn != "" ? 1 : 0
+  count  = module.this.enabled && var.codestar_connection_arn != "" ? 1 : 0
   name   = module.codestar_label.id
   policy = join("", data.aws_iam_policy_document.codestar.*.json)
 }
 
 data "aws_iam_policy_document" "codestar" {
-  count = var.enabled && var.codestar_connection_arn != "" ? 1 : 0
+  count = module.this.enabled && var.codestar_connection_arn != "" ? 1 : 0
   statement {
     sid = ""
 
@@ -226,18 +197,18 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.23.0"
-  enabled               = var.enabled
-  namespace             = var.namespace
-  name                  = var.name
-  stage                 = var.stage
+  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.25.0"
+  enabled               = module.this.enabled
+  namespace             = module.this.namespace
+  name                  = module.this.name
+  stage                 = module.this.stage
   build_image           = var.build_image
   build_compute_type    = var.build_compute_type
   build_timeout         = var.build_timeout
   buildspec             = var.buildspec
-  delimiter             = var.delimiter
-  attributes            = concat(var.attributes, ["build"])
-  tags                  = var.tags
+  delimiter             = module.this.delimiter
+  attributes            = concat(module.this.attributes, ["build"])
+  tags                  = module.this.tags
   privileged_mode       = var.privileged_mode
   aws_region            = var.region != "" ? var.region : data.aws_region.default.name
   aws_account_id        = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
@@ -251,13 +222,13 @@ module "codebuild" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
-  count      = var.enabled ? 1 : 0
+  count      = module.this.enabled ? 1 : 0
   role       = module.codebuild.role_id
   policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
 resource "aws_codepipeline" "default" {
-  count    = var.enabled && var.github_oauth_token != "" ? 1 : 0
+  count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
 
@@ -313,23 +284,23 @@ resource "aws_codepipeline" "default" {
     }
   }
 
-  # stage {
-  #   name = "Deploy"
+  stage {
+    name = "Deploy"
 
-  #   action {
-  #     name            = "Deploy"
-  #     category        = "Deploy"
-  #     owner           = "AWS"
-  #     provider        = "ECS"
-  #     input_artifacts = ["task"]
-  #     version         = "1"
+    action {
+      name            = "Deploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      input_artifacts = ["task"]
+      version         = "1"
 
-  #     configuration = {
-  #       ClusterName = var.ecs_cluster_name
-  #       ServiceName = var.service_name
-  #     }
-  #   }
-  # }
+      configuration = {
+        ClusterName = var.ecs_cluster_name
+        ServiceName = var.service_name
+      }
+    }
+  }
 
   lifecycle {
     # prevent github OAuthToken from causing updates, since it's removed from state file	
@@ -339,7 +310,7 @@ resource "aws_codepipeline" "default" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
 resource "aws_codepipeline" "bitbucket" {
-  count    = var.enabled && var.codestar_connection_arn != "" ? 1 : 0
+  count    = module.this.enabled && var.codestar_connection_arn != "" ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
 
@@ -415,7 +386,7 @@ resource "aws_codepipeline" "bitbucket" {
 }
 
 resource "random_string" "webhook_secret" {
-  count  = var.enabled && var.webhook_enabled ? 1 : 0
+  count  = module.this.enabled && var.webhook_enabled ? 1 : 0
   length = 32
 
   # Special characters are not allowed in webhook secret (AWS silently ignores webhook callbacks)
@@ -428,7 +399,7 @@ locals {
 }
 
 resource "aws_codepipeline_webhook" "webhook" {
-  count           = var.enabled && var.webhook_enabled ? 1 : 0
+  count           = module.this.enabled && var.webhook_enabled ? 1 : 0
   name            = module.codepipeline_label.id
   authentication  = var.webhook_authentication
   target_action   = var.webhook_target_action
@@ -446,7 +417,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 
 module "github_webhooks" {
   source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.10.0"
-  enabled              = var.enabled && var.webhook_enabled ? true : false
+  enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
