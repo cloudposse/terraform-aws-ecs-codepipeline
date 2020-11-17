@@ -5,7 +5,7 @@ provider "aws" {
 module "vpc" {
   source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.18.0"
   cidr_block = var.vpc_cidr_block
-  context = module.this.context
+  context    = module.this.context
 }
 
 module "subnets" {
@@ -16,7 +16,7 @@ module "subnets" {
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = true
   nat_instance_enabled = false
-  context = module.this.context
+  context              = module.this.context
 }
 
 resource "aws_ecs_cluster" "default" {
@@ -83,5 +83,5 @@ module "ecs_codepipeline" {
   environment_variables   = var.environment_variables
   ecs_cluster_name        = aws_ecs_cluster.default.name
   service_name            = module.ecs_alb_service_task.service_name
-  context = module.this.context
+  context                 = module.this.context
 }
