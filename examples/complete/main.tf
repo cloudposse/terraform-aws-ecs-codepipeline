@@ -2,47 +2,26 @@ provider "aws" {
   region = var.region
 }
 
-module "label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  name        = var.name
-  delimiter   = var.delimiter
-  attributes  = var.attributes
-  tags        = var.tags
-}
-
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.16.1"
-  namespace  = var.namespace
-  stage      = var.stage
-  name       = var.name
-  delimiter  = var.delimiter
-  attributes = var.attributes
+  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.18.0"
   cidr_block = var.vpc_cidr_block
-  tags       = var.tags
+  context    = module.this.context
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.26.0"
+  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.31.0"
   availability_zones   = var.availability_zones
-  namespace            = var.namespace
-  stage                = var.stage
-  name                 = var.name
-  attributes           = var.attributes
-  delimiter            = var.delimiter
   vpc_id               = module.vpc.vpc_id
   igw_id               = module.vpc.igw_id
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = true
   nat_instance_enabled = false
-  tags                 = var.tags
+  context              = module.this.context
 }
 
 resource "aws_ecs_cluster" "default" {
-  name = module.label.id
-  tags = module.label.tags
+  name = module.this.id
+  tags = module.this.tags
 }
 
 module "container_definition" {
@@ -59,12 +38,12 @@ module "container_definition" {
 }
 
 module "ecs_alb_service_task" {
-  source                             = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.39.0"
-  namespace                          = var.namespace
-  stage                              = var.stage
-  name                               = var.name
-  attributes                         = var.attributes
-  delimiter                          = var.delimiter
+  source                             = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.40.2"
+  namespace                          = module.this.namespace
+  stage                              = module.this.stage
+  name                               = module.this.name
+  attributes                         = module.this.attributes
+  delimiter                          = module.this.delimiter
   alb_security_group                 = module.vpc.vpc_default_security_group_id
   container_definition_json          = module.container_definition.json_map_encoded_list
   ecs_cluster_arn                    = aws_ecs_cluster.default.arn
@@ -72,7 +51,7 @@ module "ecs_alb_service_task" {
   vpc_id                             = module.vpc.vpc_id
   security_group_ids                 = [module.vpc.vpc_default_security_group_id]
   subnet_ids                         = module.subnets.public_subnet_ids
-  tags                               = var.tags
+  tags                               = module.this.tags
   ignore_changes_task_definition     = var.ignore_changes_task_definition
   network_mode                       = var.network_mode
   assign_public_ip                   = var.assign_public_ip
@@ -87,10 +66,6 @@ module "ecs_alb_service_task" {
 
 module "ecs_codepipeline" {
   source                  = "../../"
-  namespace               = var.namespace
-  environment             = var.environment
-  stage                   = var.stage
-  name                    = var.name
   region                  = var.region
   github_oauth_token      = var.github_oauth_token
   repo_owner              = var.repo_owner
@@ -108,4 +83,5 @@ module "ecs_codepipeline" {
   environment_variables   = var.environment_variables
   ecs_cluster_name        = aws_ecs_cluster.default.name
   service_name            = module.ecs_alb_service_task.service_name
+  context                 = module.this.context
 }
