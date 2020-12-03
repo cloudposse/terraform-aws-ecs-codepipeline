@@ -155,7 +155,7 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 }
 
 module "codestar_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
   enabled    = module.this.enabled && var.codestar_connection_arn != ""
   attributes = compact(concat(var.attributes, ["codestar"]))
   context    = module.this.context
@@ -303,7 +303,7 @@ resource "aws_codepipeline" "default" {
   }
 
   lifecycle {
-    # prevent github OAuthToken from causing updates, since it's removed from state file	
+    # prevent github OAuthToken from causing updates, since it's removed from state file
     ignore_changes = [stage[0].action[0].configuration]
   }
 }
