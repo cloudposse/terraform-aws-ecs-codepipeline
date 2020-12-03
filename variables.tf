@@ -177,4 +177,3 @@ variable "local_cache_modes" {
   default     = []
   description = "Specifies settings that AWS CodeBuild uses to store and reuse build dependencies. Valid values: LOCAL_SOURCE_CACHE, LOCAL_DOCKER_LAYER_CACHE, and LOCAL_CUSTOM_CACHE"
 }
-
