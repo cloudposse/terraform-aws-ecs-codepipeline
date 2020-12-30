@@ -29,7 +29,7 @@ resource "aws_ecs_cluster" "default" {
 }
 
 module "container_definition" {
-  source = "cloudposse/ecs-container-definition/aws"
+  source                       = "cloudposse/ecs-container-definition/aws"
   version                      = "0.46.1"
   container_name               = var.container_name
   container_image              = var.container_image

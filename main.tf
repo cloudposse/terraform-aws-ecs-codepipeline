@@ -426,8 +426,8 @@ resource "aws_codepipeline_webhook" "webhook" {
 module "github_webhooks" {
   source  = "cloudposse/repository-webhooks/github"
   version = "0.10.0"
-#  TODO: update version after release of TF 0.14 and context.tf support
-#  version              = "0.11.0"
+  #  TODO: update version after release of TF 0.14 and context.tf support
+  #  version              = "0.11.0"
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
@@ -438,6 +438,6 @@ module "github_webhooks" {
   webhook_content_type = "json"
   events               = var.github_webhook_events
 
-#  TODO: uncomment after release
-#  context = module.this.context
+  #  TODO: uncomment after release
+  #  context = module.this.context
 }
