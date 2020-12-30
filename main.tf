@@ -1,7 +1,9 @@
 module "codepipeline_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
-  attributes = compact(concat(var.attributes, ["codepipeline"]))
-  context    = module.this.context
+  source     = "cloudposse/label/null"
+  version    = "0.22.1"
+  attributes = ["codepipeline"]
+
+  context = module.this.context
 }
 
 resource "aws_s3_bucket" "default" {
@@ -13,9 +15,11 @@ resource "aws_s3_bucket" "default" {
 }
 
 module "codepipeline_assume_role_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
-  context    = module.this.context
-  attributes = compact(concat(var.attributes, ["codepipeline", "assume"]))
+  source     = "cloudposse/label/null"
+  version    = "0.22.1"
+  attributes = ["codepipeline", "assume"]
+
+  context = module.this.context
 }
 
 resource "aws_iam_role" "default" {
@@ -83,9 +87,11 @@ resource "aws_iam_role_policy_attachment" "s3" {
 }
 
 module "codepipeline_s3_policy_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
-  attributes = compact(concat(var.attributes, ["codepipeline", "s3"]))
-  context    = module.this.context
+  source     = "cloudposse/label/null"
+  version    = "0.22.1"
+  attributes = ["codepipeline", "s3"]
+
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "s3" {
@@ -123,9 +129,11 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 }
 
 module "codebuild_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
-  attributes = compact(concat(var.attributes, ["codebuild"]))
-  context    = module.this.context
+  source     = "cloudposse/label/null"
+  version    = "0.22.1"
+  attributes = ["codebuild"]
+
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "codebuild" {
@@ -155,10 +163,12 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 }
 
 module "codestar_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.21.0"
+  source     = "cloudposse/label/null"
+  version    = "0.22.1"
   enabled    = module.this.enabled && var.codestar_connection_arn != ""
-  attributes = compact(concat(var.attributes, ["codestar"]))
-  context    = module.this.context
+  attributes = ["codestar"]
+
+  context = module.this.context
 }
 
 resource "aws_iam_policy" "codestar" {
@@ -197,18 +207,14 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "git::https://github.com/cloudposse/terraform-aws-codebuild.git?ref=tags/0.25.0"
-  enabled               = module.this.enabled
-  namespace             = module.this.namespace
-  name                  = module.this.name
-  stage                 = module.this.stage
+  source                = "cloudposse/codebuild/aws"
+  version               = "0.27.0"
   build_image           = var.build_image
   build_compute_type    = var.build_compute_type
   build_timeout         = var.build_timeout
   buildspec             = var.buildspec
   delimiter             = module.this.delimiter
-  attributes            = concat(module.this.attributes, ["build"])
-  tags                  = module.this.tags
+  attributes            = ["build"]
   privileged_mode       = var.privileged_mode
   aws_region            = var.region != "" ? var.region : data.aws_region.default.name
   aws_account_id        = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
@@ -219,6 +225,8 @@ module "codebuild" {
   badge_enabled         = var.badge_enabled
   cache_type            = var.cache_type
   local_cache_modes     = var.local_cache_modes
+
+  context = module.this.context
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
@@ -416,7 +424,10 @@ resource "aws_codepipeline_webhook" "webhook" {
 }
 
 module "github_webhooks" {
-  source               = "git::https://github.com/cloudposse/terraform-github-repository-webhooks.git?ref=tags/0.10.0"
+  source  = "cloudposse/repository-webhooks/github"
+  version = "0.10.0"
+#  TODO: update version after release of TF 0.14 and context.tf support
+#  version              = "0.11.0"
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
@@ -426,4 +437,7 @@ module "github_webhooks" {
   webhook_secret       = local.webhook_secret
   webhook_content_type = "json"
   events               = var.github_webhook_events
+
+#  TODO: uncomment after release
+#  context = module.this.context
 }
