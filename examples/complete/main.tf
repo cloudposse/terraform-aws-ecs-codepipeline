@@ -40,8 +40,6 @@ module "container_definition" {
   readonly_root_filesystem     = var.container_readonly_root_filesystem
   environment                  = var.container_environment
   port_mappings                = var.container_port_mappings
-
-  context = module.this.context
 }
 
 module "ecs_alb_service_task" {
