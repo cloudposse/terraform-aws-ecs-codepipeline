@@ -3,20 +3,24 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.18.0"
+  source     = "cloudposse/vpc/aws"
+  version    = "0.18.1"
   cidr_block = var.vpc_cidr_block
-  context    = module.this.context
+
+  context = module.this.context
 }
 
 module "subnets" {
-  source               = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.31.0"
+  source               = "cloudposse/dynamic-subnets/aws"
+  version              = "0.33.0"
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
   igw_id               = module.vpc.igw_id
   cidr_block           = module.vpc.vpc_cidr_block
   nat_gateway_enabled  = true
   nat_instance_enabled = false
-  context              = module.this.context
+
+  context = module.this.context
 }
 
 resource "aws_ecs_cluster" "default" {
@@ -25,7 +29,8 @@ resource "aws_ecs_cluster" "default" {
 }
 
 module "container_definition" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.41.0"
+  source                       = "cloudposse/ecs-container-definition/aws"
+  version                      = "0.46.1"
   container_name               = var.container_name
   container_image              = var.container_image
   container_memory             = var.container_memory
@@ -38,12 +43,8 @@ module "container_definition" {
 }
 
 module "ecs_alb_service_task" {
-  source                             = "git::https://github.com/cloudposse/terraform-aws-ecs-alb-service-task.git?ref=tags/0.40.2"
-  namespace                          = module.this.namespace
-  stage                              = module.this.stage
-  name                               = module.this.name
-  attributes                         = module.this.attributes
-  delimiter                          = module.this.delimiter
+  source                             = "cloudposse/ecs-alb-service-task/aws"
+  version                            = "0.42.3"
   alb_security_group                 = module.vpc.vpc_default_security_group_id
   container_definition_json          = module.container_definition.json_map_encoded_list
   ecs_cluster_arn                    = aws_ecs_cluster.default.arn
@@ -62,12 +63,15 @@ module "ecs_alb_service_task" {
   desired_count                      = var.desired_count
   task_memory                        = var.task_memory
   task_cpu                           = var.task_cpu
+
+  context = module.this.context
 }
 
 module "ecs_codepipeline" {
   source                  = "../../"
   region                  = var.region
   github_oauth_token      = var.github_oauth_token
+  github_anonymous        = var.github_anonymous
   repo_owner              = var.repo_owner
   repo_name               = var.repo_name
   branch                  = var.branch
@@ -83,5 +87,6 @@ module "ecs_codepipeline" {
   environment_variables   = var.environment_variables
   ecs_cluster_name        = aws_ecs_cluster.default.name
   service_name            = module.ecs_alb_service_task.service_name
-  context                 = module.this.context
+
+  context = module.this.context
 }

@@ -67,7 +67,9 @@ usage: |-
   In this example, we'll trigger the pipeline anytime the `master` branch is updated.
   ```hcl
   module "ecs_push_pipeline" {
-    source                = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
+    source = "cloudposse/ecs-codepipeline/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
     name                  = "app"
     namespace             = "eg"
     stage                 = "staging"
@@ -88,7 +90,9 @@ usage: |-
 
   ```hcl
   module "ecs_release_pipeline" {
-    source                      = "git::https://github.com/cloudposse/terraform-aws-ecs-codepipeline.git?ref=master"
+    source = "cloudposse/ecs-codepipeline/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
     name                        = "app"
     namespace                   = "eg"
     stage                       = "staging"
