@@ -226,7 +226,7 @@ Available targets:
 
 | Name | Source | Version |
 |------|--------|---------|
-| codebuild | cloudposse/codebuild/aws | 0.32.0 |
+| codebuild | cloudposse/codebuild/aws | 0.35.0 |
 | codebuild_label | cloudposse/label/null | 0.24.1 |
 | codepipeline_assume_role_label | cloudposse/label/null | 0.24.1 |
 | codepipeline_label | cloudposse/label/null | 0.24.1 |
@@ -291,6 +291,9 @@ Available targets:
 | repo\_name | GitHub repository name of the application to be built and deployed to ECS | `string` | n/a | yes |
 | repo\_owner | GitHub Organization or Username | `string` | n/a | yes |
 | s3\_bucket\_force\_destroy | A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error | `bool` | `false` | no |
+| secondary\_artifact\_bucket\_id | Optional bucket for secondary artifact deployment. If specified, the buildspec must include a secondary artifacts section which controls the artifacts deployed to the bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) | `string` | `null` | no |
+| secondary\_artifact\_encryption\_enabled | If set to true, enable encryption on the secondary artifact bucket | `bool` | `false` | no |
+| secondary\_artifact\_identifier | Identifier for optional secondary artifact deployment. If specified, the identifier must appear in the buildspec as the name of the section which controls the artifacts deployed to the secondary artifact bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) | `string` | `null` | no |
 | service\_name | ECS Service Name | `string` | n/a | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
