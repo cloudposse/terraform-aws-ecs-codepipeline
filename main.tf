@@ -425,7 +425,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 
 module "github_webhooks" {
   source  = "cloudposse/repository-webhooks/github"
-  version = "0.13.0"
+  version = "0.12.0"
 
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_organization  = var.repo_owner
