@@ -71,7 +71,6 @@ module "ecs_codepipeline" {
   source                  = "../../"
   region                  = var.region
   github_oauth_token      = var.github_oauth_token
-  github_anonymous        = var.github_anonymous
   repo_owner              = var.repo_owner
   repo_name               = var.repo_name
   branch                  = var.branch
