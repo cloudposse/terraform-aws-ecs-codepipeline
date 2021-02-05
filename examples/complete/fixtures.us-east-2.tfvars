@@ -80,8 +80,6 @@ container_port_mappings = [
 
 github_oauth_token = "test"
 
-github_anonymous = true
-
 repo_owner = "cloudposse"
 
 repo_name = "terraform-aws-ecs-codepipeline"
