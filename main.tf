@@ -1,6 +1,6 @@
 module "codepipeline_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.1"
+  version    = "0.22.1"
   attributes = ["codepipeline"]
 
   context = module.this.context
@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "default" {
 
 module "codepipeline_assume_role_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.1"
+  version    = "0.22.1"
   attributes = ["codepipeline", "assume"]
 
   context = module.this.context
@@ -88,7 +88,7 @@ resource "aws_iam_role_policy_attachment" "s3" {
 
 module "codepipeline_s3_policy_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.1"
+  version    = "0.22.1"
   attributes = ["codepipeline", "s3"]
 
   context = module.this.context
@@ -130,7 +130,7 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 
 module "codebuild_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.1"
+  version    = "0.22.1"
   attributes = ["codebuild"]
 
   context = module.this.context
@@ -164,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 
 module "codestar_label" {
   source     = "cloudposse/label/null"
-  version    = "0.24.1"
+  version    = "0.22.1"
   enabled    = module.this.enabled && var.codestar_connection_arn != ""
   attributes = ["codestar"]
 
