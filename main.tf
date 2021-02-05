@@ -425,7 +425,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 
 module "github_webhooks" {
   source  = "cloudposse/repository-webhooks/github"
-  version = "0.10.0"
+  version = "0.11.0"
   #  TODO: update version after release of TF 0.14 and context.tf support
   #  version              = "0.11.0"
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
