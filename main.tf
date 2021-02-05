@@ -428,7 +428,6 @@ module "github_webhooks" {
   version = "0.11.0"
 
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
-  github_anonymous     = var.github_anonymous
   github_organization  = var.repo_owner
   github_repositories  = [var.repo_name]
   github_token         = var.github_webhooks_token
