@@ -208,7 +208,7 @@ data "aws_region" "default" {
 
 module "codebuild" {
   source                = "cloudposse/codebuild/aws"
-  version               = "0.30.1"
+  version               = "0.31.1"
   build_image           = var.build_image
   build_compute_type    = var.build_compute_type
   build_timeout         = var.build_timeout
