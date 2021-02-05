@@ -1,6 +1,6 @@
 module "codepipeline_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.24.1"
   attributes = ["codepipeline"]
 
   context = module.this.context
@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "default" {
 
 module "codepipeline_assume_role_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.24.1"
   attributes = ["codepipeline", "assume"]
 
   context = module.this.context
@@ -88,7 +88,7 @@ resource "aws_iam_role_policy_attachment" "s3" {
 
 module "codepipeline_s3_policy_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.24.1"
   attributes = ["codepipeline", "s3"]
 
   context = module.this.context
@@ -130,7 +130,7 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 
 module "codebuild_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.24.1"
   attributes = ["codebuild"]
 
   context = module.this.context
@@ -164,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 
 module "codestar_label" {
   source     = "cloudposse/label/null"
-  version    = "0.22.1"
+  version    = "0.24.1"
   enabled    = module.this.enabled && var.codestar_connection_arn != ""
   attributes = ["codestar"]
 
@@ -208,7 +208,7 @@ data "aws_region" "default" {
 
 module "codebuild" {
   source                = "cloudposse/codebuild/aws"
-  version               = "0.30.1"
+  version               = "0.31.1"
   build_image           = var.build_image
   build_compute_type    = var.build_compute_type
   build_timeout         = var.build_timeout
@@ -425,7 +425,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 
 module "github_webhooks" {
   source  = "cloudposse/repository-webhooks/github"
-  version = "0.11.0"
+  version = "0.13.0"
 
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_organization  = var.repo_owner
