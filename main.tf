@@ -207,24 +207,25 @@ data "aws_region" "default" {
 }
 
 module "codebuild" {
-  source                = "cloudposse/codebuild/aws"
-  version               = "0.31.1"
-  build_image           = var.build_image
-  build_compute_type    = var.build_compute_type
-  build_timeout         = var.build_timeout
-  buildspec             = var.buildspec
-  delimiter             = module.this.delimiter
-  attributes            = ["build"]
-  privileged_mode       = var.privileged_mode
-  aws_region            = var.region != "" ? var.region : data.aws_region.default.name
-  aws_account_id        = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
-  image_repo_name       = var.image_repo_name
-  image_tag             = var.image_tag
-  github_token          = var.github_oauth_token
-  environment_variables = var.environment_variables
-  badge_enabled         = var.badge_enabled
-  cache_type            = var.cache_type
-  local_cache_modes     = var.local_cache_modes
+  source                      = "cloudposse/codebuild/aws"
+  version                     = "0.31.1"
+  build_image                 = var.build_image
+  build_compute_type          = var.build_compute_type
+  build_timeout               = var.build_timeout
+  buildspec                   = var.buildspec
+  delimiter                   = module.this.delimiter
+  attributes                  = ["build"]
+  privileged_mode             = var.privileged_mode
+  aws_region                  = var.region != "" ? var.region : data.aws_region.default.name
+  aws_account_id              = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
+  image_repo_name             = var.image_repo_name
+  image_tag                   = var.image_tag
+  github_token                = var.github_oauth_token
+  environment_variables       = var.environment_variables
+  badge_enabled               = var.badge_enabled
+  cache_type                  = var.cache_type
+  cache_bucket_suffix_enabled = var.cache_bucket_suffix_enabled
+  local_cache_modes           = var.local_cache_modes
 
   context = module.this.context
 }
