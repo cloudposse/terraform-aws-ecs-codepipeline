@@ -17,6 +17,34 @@
 | aws | >= 2.0 |
 | random | >= 2.1 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| codebuild | cloudposse/codebuild/aws | 0.31.1 |
+| codebuild_label | cloudposse/label/null | 0.24.1 |
+| codepipeline_assume_role_label | cloudposse/label/null | 0.24.1 |
+| codepipeline_label | cloudposse/label/null | 0.24.1 |
+| codepipeline_s3_policy_label | cloudposse/label/null | 0.24.1 |
+| codestar_label | cloudposse/label/null | 0.24.1 |
+| github_webhooks | cloudposse/repository-webhooks/github | 0.12.0 |
+| this | cloudposse/label/null | 0.24.1 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/data-sources/caller_identity) |
+| [aws_codepipeline](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/codepipeline) |
+| [aws_codepipeline_webhook](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/codepipeline_webhook) |
+| [aws_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/iam_policy) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/data-sources/iam_policy_document) |
+| [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/iam_role) |
+| [aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/iam_role_policy_attachment) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/data-sources/region) |
+| [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/2.0/docs/resources/s3_bucket) |
+| [random_string](https://registry.terraform.io/providers/hashicorp/random/2.1/docs/resources/string) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -30,6 +58,7 @@
 | build\_image | Docker image for build environment, _e.g._ `aws/codebuild/docker:docker:17.09.0` | `string` | `"aws/codebuild/docker:17.09.0"` | no |
 | build\_timeout | How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed | `number` | `60` | no |
 | buildspec | Declaration to use for building the project. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) | `string` | `""` | no |
+| cache\_bucket\_suffix\_enabled | The cache bucket generates a random 13 character string to generate a unique bucket name. If set to false it uses terraform-null-label's id value. It only works when cache\_type is 'S3' | `bool` | `true` | no |
 | cache\_type | The type of storage that will be used for the AWS CodeBuild project cache. Valid values: NO\_CACHE, LOCAL, and S3.  Defaults to S3.  If cache\_type is S3, it will create an S3 bucket for storing codebuild cache inside | `string` | `"S3"` | no |
 | codestar\_connection\_arn | CodeStar connection ARN required for Bitbucket integration with CodePipeline | `string` | `""` | no |
 | context | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
@@ -82,5 +111,4 @@
 | codepipeline\_id | CodePipeline ID |
 | webhook\_id | The CodePipeline webhook's ID |
 | webhook\_url | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
-
 <!-- markdownlint-restore -->
