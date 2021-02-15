@@ -21,7 +21,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| codebuild | cloudposse/codebuild/aws | 0.31.1 |
+| codebuild | cloudposse/codebuild/aws | 0.32.0 |
 | codebuild_label | cloudposse/label/null | 0.24.1 |
 | codepipeline_assume_role_label | cloudposse/label/null | 0.24.1 |
 | codepipeline_label | cloudposse/label/null | 0.24.1 |
