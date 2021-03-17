@@ -71,6 +71,25 @@ variable "buildspec" {
   description = "Declaration to use for building the project. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)"
 }
 
+variable "secondary_artifact_bucket_id" {
+  type        = string
+  default     = null
+  description = "Optional bucket for secondary artifact deployment. If specified, the buildspec must include a secondary artifacts section which controls the artifacts deployed to the bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)"
+}
+
+variable "secondary_artifact_encryption_enabled" {
+  type        = bool
+  default     = false
+  description = "If set to true, enable encryption on the secondary artifact bucket"
+}
+
+variable "secondary_artifact_identifier" {
+  type        = string
+  default     = null
+  description = "Identifier for optional secondary artifact deployment. If specified, the identifier must appear in the buildspec as the name of the section which controls the artifacts deployed to the secondary artifact bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)"
+}
+
+
 # https://www.terraform.io/docs/configuration/variables.html
 # It is recommended you avoid using boolean values and use explicit strings
 variable "poll_source_changes" {
