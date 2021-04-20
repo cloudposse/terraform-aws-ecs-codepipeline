@@ -55,15 +55,15 @@ output "codebuild_badge_url" {
 
 output "codepipeline_id" {
   description = "CodePipeline ID"
-  value       = lookup(locals.codepipeline_resource, "id", "")
+  value       = lookup(local.codepipeline_resource, "id", "")
 }
 
 output "codepipeline_arn" {
   description = "CodePipeline ARN"
-  value       = lookup(locals.codepipeline_resource, "arn", "")
+  value       = lookup(local.codepipeline_resource, "arn", "")
 }
 
 output "codepipeline_resource" {
   description = "CodePipeline resource"
-  value       = locals.codepipeline_resource
+  value       = local.codepipeline_resource
 }
