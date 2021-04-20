@@ -51,12 +51,12 @@ output "codebuild_badge_url" {
 
 output "codepipeline_id" {
   description = "CodePipeline ID"
-  value       = join("", aws_codepipeline.default.*.id)
+  value       = lookup(output.codepipeline_resource, "id", "")
 }
 
 output "codepipeline_arn" {
   description = "CodePipeline ARN"
-  value       = join("", aws_codepipeline.default.*.arn)
+  value       = lookup(output.codepipeline_resource, "arn", "")
 }
 
 output "codepipeline_resource" {
