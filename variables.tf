@@ -203,4 +203,3 @@ variable "codebuild_vpc_config" {
   default     = {}
   description = "Configuration for the builds to run inside a VPC."
 }
-  

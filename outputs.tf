@@ -58,3 +58,8 @@ output "codepipeline_arn" {
   description = "CodePipeline ARN"
   value       = join("", aws_codepipeline.default.*.arn)
 }
+
+output "codepipeline_resource" {
+  description = "CodePipeline resource"
+  value       = element(concat(aws_codepipeline.default.*, aws_codepipeline.bitbucket.*), 0)
+}
