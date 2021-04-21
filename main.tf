@@ -186,13 +186,13 @@ data "aws_iam_policy_document" "codestar" {
       "codestar-connections:UseConnection"
     ]
 
-    # condition {
-    #   test     = "StringLike"
-    #   variable = "codestar-connections:FullRepositoryId"
-    #   values = [
-    #     format("%s/%s", var.repo_owner, var.repo_name)
-    #   ]
-    # }
+    condition {
+      test     = "StringLike"
+      variable = "codestar-connections:FullRepositoryId"
+      values = [
+        format("%s/%s", var.repo_owner, var.repo_name)
+      ]
+    }
 
     resources = [var.codestar_connection_arn]
     effect    = "Allow"
