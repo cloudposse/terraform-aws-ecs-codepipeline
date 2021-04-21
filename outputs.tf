@@ -1,5 +1,5 @@
 locals {
-  codepipeline_resource = try(element(concat(aws_codepipeline.default.*, aws_codepipeline.bitbucket.*), 0), null)
+  codepipeline_resource = try(element(concat(aws_codepipeline.default.*, aws_codepipeline.bitbucket.*), 0), {})
 }
 
 output "badge_url" {
