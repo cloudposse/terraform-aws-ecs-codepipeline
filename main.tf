@@ -228,6 +228,7 @@ module "codebuild" {
   secondary_artifact_location           = var.secondary_artifact_bucket_id
   secondary_artifact_identifier         = var.secondary_artifact_identifier
   secondary_artifact_encryption_enabled = var.secondary_artifact_encryption_enabled
+  vpc_config                            = var.codebuild_vpc_config
 
   context = module.this.context
 }
