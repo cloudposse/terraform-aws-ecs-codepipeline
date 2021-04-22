@@ -1,3 +1,7 @@
+locals {
+  codepipeline_resource = try(element(concat(aws_codepipeline.default.*, aws_codepipeline.bitbucket.*), 0), {})
+}
+
 output "badge_url" {
   description = "The URL of the build badge when badge_enabled is enabled"
   value       = module.codebuild.badge_url
@@ -51,10 +55,15 @@ output "codebuild_badge_url" {
 
 output "codepipeline_id" {
   description = "CodePipeline ID"
-  value       = join("", aws_codepipeline.default.*.id)
+  value       = lookup(local.codepipeline_resource, "id", "")
 }
 
 output "codepipeline_arn" {
   description = "CodePipeline ARN"
-  value       = join("", aws_codepipeline.default.*.arn)
+  value       = lookup(local.codepipeline_resource, "arn", "")
+}
+
+output "codepipeline_resource" {
+  description = "CodePipeline resource"
+  value       = local.codepipeline_resource
 }
