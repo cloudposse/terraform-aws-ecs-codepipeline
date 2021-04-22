@@ -187,7 +187,7 @@ data "aws_iam_policy_document" "codestar" {
     ]
 
     condition {
-      test     = "StringLike"
+      test     = "ForAllValues:StringEquals"
       variable = "codestar-connections:FullRepositoryId"
       values = [
         format("%s/%s", var.repo_owner, var.repo_name)
