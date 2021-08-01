@@ -10,14 +10,14 @@ variable "service_name" {
 
 variable "github_oauth_token" {
   type        = string
-  description = "GitHub OAuth Token with permissions to access private repositories"
+  description = "GitHub OAuth Token with permissions to access private repositories. NOTE: AWS no longer recommends using tokens. [Consider upgrading to a CodeStar connection](https://docs.aws.amazon.com/codepipeline/latest/userguide/update-github-action-connections.html)."
   default     = ""
 }
 
 variable "github_webhooks_token" {
   type        = string
   default     = ""
-  description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable"
+  description = "GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable. NOTE: AWS no longer recommends using tokens. [Consider upgrading to a CodeStar connection](https://docs.aws.amazon.com/codepipeline/latest/userguide/update-github-action-connections.html)."
 }
 
 variable "github_webhook_events" {
@@ -176,7 +176,7 @@ variable "s3_bucket_force_destroy" {
 
 variable "codestar_connection_arn" {
   type        = string
-  description = "CodeStar connection ARN required for Bitbucket integration with CodePipeline"
+  description = "CodeStar connection ARN for source integration with CodePipeline"
   default     = ""
 }
 

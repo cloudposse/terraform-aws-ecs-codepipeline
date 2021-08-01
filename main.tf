@@ -239,7 +239,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_s3" {
   policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
-resource "aws_codepipeline" "default" {
+resource "aws_codepipeline" "github_oauth" {
   count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
@@ -321,7 +321,7 @@ resource "aws_codepipeline" "default" {
 }
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
-resource "aws_codepipeline" "bitbucket" {
+resource "aws_codepipeline" "codestar" {
   count    = module.this.enabled && var.codestar_connection_arn != "" ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
@@ -415,7 +415,7 @@ resource "aws_codepipeline_webhook" "webhook" {
   name            = module.codepipeline_label.id
   authentication  = var.webhook_authentication
   target_action   = var.webhook_target_action
-  target_pipeline = join("", aws_codepipeline.default.*.name)
+  target_pipeline = join("", aws_codepipeline.github_oauth.*.name)
 
   authentication_configuration {
     secret_token = local.webhook_secret
