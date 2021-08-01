@@ -239,6 +239,20 @@ resource "aws_iam_role_policy_attachment" "codebuild_s3" {
   policy_arn = join("", aws_iam_policy.s3.*.arn)
 }
 
+locals {
+  deploy_configuration = var.deployment_provider == "CodeDeployToECS" ? {
+    ApplicationName                = var.codedeploy_application
+    DeploymentGroupName            = var.codedeploy_deployment_group
+    TaskDefinitionTemplateArtifact = "task"
+    TaskDefinitionTemplatePath     = var.codedeploy_taskdefinition_path
+    AppSpecTemplateArtifact        = "task"
+    AppSpecTemplatePath            = var.codedeploy_appspec_path
+    } : {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.service_name
+  }
+}
+
 resource "aws_codepipeline" "default" {
   count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
   name     = module.codepipeline_label.id
@@ -303,14 +317,11 @@ resource "aws_codepipeline" "default" {
       name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "ECS"
+      provider        = var.deployment_provider
       input_artifacts = ["task"]
       version         = "1"
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
-      }
+      configuration = local.deploy_configuration
     }
   }
 
@@ -385,14 +396,11 @@ resource "aws_codepipeline" "bitbucket" {
       name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "ECS"
+      provider        = var.deployment_provider
       input_artifacts = ["task"]
       version         = "1"
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
-      }
+      configuration = local.deploy_configuration
     }
   }
 }

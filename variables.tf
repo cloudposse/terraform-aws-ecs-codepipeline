@@ -204,3 +204,39 @@ variable "codebuild_vpc_config" {
   default     = {}
   description = "Configuration for the builds to run inside a VPC."
 }
+
+variable "deployment_provider" {
+  type        = string
+  default     = "ECS"
+  description = "Deploy stage provider value. Valid values: CodeDeployToECS or ECS. Defaults to ECS."
+
+  validation {
+    condition     = contains(["CodeDeployToECS", "ECS"], var.deployment_provider)
+    error_message = "Deploy stage provider must be either CodeDeployToECS or ECS."
+  }
+}
+
+variable "codedeploy_application" {
+  type        = string
+  default     = ""
+  description = "CodeDeploy application name. Only used when deployment_provider is CodeDeployToECS."
+}
+
+variable "codedeploy_deployment_group" {
+  type        = string
+  default     = ""
+  description = "CodeDeploy deployment group name. Only used when deployment_provider is CodeDeployToECS."
+}
+
+variable "codedeploy_taskdefinition_path" {
+  type        = string
+  default     = "taskdef.json"
+  description = "Task definition template path, relative to repository root. Only used when deployment_provider is CodeDeployToECS."
+}
+
+# https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html
+variable "codedeploy_appspec_path" {
+  type        = string
+  default     = "appspec.yml"
+  description = "AppSpec template path, relative to repository root. Only used when deployment_provider is CodeDeployToECS."
+}
