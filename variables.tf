@@ -188,7 +188,7 @@ variable "cache_type" {
 
 variable "cache_bucket_suffix_enabled" {
   type        = bool
-  default     = false
+  default     = true
   description = "The cache bucket generates a random 13 character string to generate a unique bucket name. If set to false it uses terraform-null-label's id value. It only works when cache_type is 'S3'"
 }
 
