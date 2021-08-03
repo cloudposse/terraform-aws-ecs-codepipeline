@@ -1,11 +1,13 @@
 variable "ecs_cluster_name" {
   type        = string
   description = "ECS Cluster Name"
+  default     = ""
 }
 
 variable "service_name" {
   type        = string
   description = "ECS Service Name"
+  default     = ""
 }
 
 variable "github_oauth_token" {
