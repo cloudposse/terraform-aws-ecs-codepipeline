@@ -207,50 +207,18 @@ data "aws_region" "default" {
 }
 
 locals {
-  image_tag      = var.image_tag != "" ? var.image_tag : "$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)"
-  has_taskdef    = var.codedeploy_taskdefinition != ""
-  has_appspec    = var.codedeploy_appspec != ""
-  taskdef_writer = <<EOF
-      - echo Writing task definition file...
-      - echo "${var.codedeploy_taskdefinition}" > ${var.codedeploy_taskdefinition_path}
-  EOF
-  appspec_writer = <<EOF
-      - echo Writing app spec file...
-      - echo "${var.codedeploy_appspec}" > ${var.codedeploy_appspec_path}
-  EOF
-
-  buildspec = var.buildspec != "" ? var.buildspec : <<EOF
-version: 0.2
-phases:
-  pre_build:
-    commands:
-      - echo Logging in to Amazon ECR...
-      - aws --version
-      - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-  build:
-    commands:
-      - echo Build started on `date`
-      - echo Building image for $IMAGE_REPO_NAME:latest and $IMAGE_REPO_NAME:$IMAGE_TAG...
-      - docker pull $IMAGE_REPO_NAME:latest || true
-      - docker build --cache-from $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:$IMAGE_TAG .
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing to $IMAGE_REPO_NAME:latest...
-      - docker push $IMAGE_REPO_NAME:latest
-      - echo Pushing to $IMAGE_REPO_NAME:$IMAGE_TAG...
-      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo Writing image detail file...
-      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-      ${local.has_taskdef ? local.taskdef_writer : "# no taskdef present"}
-      ${local.has_appspec ? local.appspec_writer : ""}
-artifacts:
-  files: 
-    - 'image*.json'
-    ${local.has_taskdef ? "- '${var.codedeploy_taskdefinition_path}'" : ""}
-    ${local.has_appspec ? "- '${var.codedeploy_appspec_path}'" : ""}
-EOF
+  image_tag = var.image_tag != "" ? var.image_tag : "$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)"
+  tmpl_vars = {
+    has_taskdef  = var.codedeploy_taskdefinition != ""
+    has_appspec  = var.codedeploy_appspec != ""
+    taskdef      = var.codedeploy_taskdefinition
+    appspec      = var.codedeploy_appspec
+    taskdef_path = var.codedeploy_taskdefinition_path
+    appspec_path = var.codedeploy_appspec_path
+  }
+  buildspec = var.buildspec != "" ? var.buildspec : templatefile("${path.module}/templates/buildspec.tpl", local.tmpl_vars)
 }
+
 module "codebuild" {
   source                                = "cloudposse/codebuild/aws"
   version                               = "0.36.0"
