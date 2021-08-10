@@ -236,9 +236,21 @@ variable "codedeploy_taskdefinition_path" {
   description = "Task definition template path, relative to repository root. Only used when deployment_provider is CodeDeployToECS."
 }
 
+variable "codedeploy_taskdefinition" {
+  type        = string
+  default     = ""
+  description = "Task Definition content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment_provider is CodeDeployToECS."
+}
+
 # https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html
 variable "codedeploy_appspec_path" {
   type        = string
   default     = "appspec.yml"
   description = "AppSpec template path, relative to repository root. Only used when deployment_provider is CodeDeployToECS."
+}
+
+variable "codedeploy_appspec" {
+  type        = string
+  default     = ""
+  description = "AppSpec content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment_provider is CodeDeployToECS."
 }

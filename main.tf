@@ -206,13 +206,58 @@ data "aws_caller_identity" "default" {
 data "aws_region" "default" {
 }
 
+locals {
+  image_tag      = var.image_tag != "" ? var.image_tag : "$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)"
+  has_taskdef    = var.codedeploy_taskdefinition != ""
+  has_appspec    = var.codedeploy_appspec != ""
+  taskdef_writer = <<EOF
+      - echo Writing task definition file...
+      - echo "${var.codedeploy_taskdefinition}" > ${var.codedeploy_taskdefinition_path}
+  EOF
+  appspec_writer = <<EOF
+      - echo Writing app spec file...
+      - echo "${var.codedeploy_appspec}" > ${var.codedeploy_appspec_path}
+  EOF
+
+  buildspec = var.buildspec != "" ? var.buildspec : <<EOF
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building image for $IMAGE_REPO_NAME:latest and $IMAGE_REPO_NAME:$IMAGE_TAG...
+      - docker pull $IMAGE_REPO_NAME:latest || true
+      - docker build --cache-from $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:$IMAGE_TAG .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing to $IMAGE_REPO_NAME:latest...
+      - docker push $IMAGE_REPO_NAME:latest
+      - echo Pushing to $IMAGE_REPO_NAME:$IMAGE_TAG...
+      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Writing image detail file...
+      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+      ${local.has_taskdef ? local.taskdef_writer : "# no taskdef present"}
+      ${local.has_appspec ? local.appspec_writer : ""}
+artifacts:
+  files: 
+    - 'image*.json'
+    ${local.has_taskdef ? "- '${var.codedeploy_taskdefinition_path}'" : ""}
+    ${local.has_appspec ? "- '${var.codedeploy_appspec_path}'" : ""}
+EOF
+}
 module "codebuild" {
   source                                = "cloudposse/codebuild/aws"
   version                               = "0.36.0"
   build_image                           = var.build_image
   build_compute_type                    = var.build_compute_type
   build_timeout                         = var.build_timeout
-  buildspec                             = var.buildspec
+  buildspec                             = local.buildspec
   delimiter                             = module.this.delimiter
   attributes                            = ["build"]
   privileged_mode                       = var.privileged_mode
@@ -252,6 +297,7 @@ locals {
     ClusterName = var.ecs_cluster_name
     ServiceName = var.service_name
   }
+
 }
 
 resource "aws_codepipeline" "default" {
