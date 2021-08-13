@@ -228,6 +228,7 @@ Available targets:
 | <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | cloudposse/codebuild/aws | 0.36.0 |
 | <a name="module_codebuild_label"></a> [codebuild\_label](#module\_codebuild\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_codepipeline_assume_role_label"></a> [codepipeline\_assume\_role\_label](#module\_codepipeline\_assume\_role\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_codepipeline_codedeploy_policy_label"></a> [codepipeline\_codedeploy\_policy\_label](#module\_codepipeline\_codedeploy\_policy\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_codepipeline_label"></a> [codepipeline\_label](#module\_codepipeline\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_codepipeline_s3_policy_label"></a> [codepipeline\_s3\_policy\_label](#module\_codepipeline\_s3\_policy\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_codestar_label"></a> [codestar\_label](#module\_codestar\_label) | cloudposse/label/null | 0.24.1 |
@@ -242,12 +243,14 @@ Available targets:
 | [aws_codepipeline.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codepipeline) | resource |
 | [aws_codepipeline_webhook.webhook](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codepipeline_webhook) | resource |
 | [aws_iam_policy.codebuild](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.codedeploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.codestar](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.codebuild](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.codebuild_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.codedeploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.codestar](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -256,6 +259,7 @@ Available targets:
 | [aws_caller_identity.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.codebuild](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.codedeploy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.codestar](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -278,10 +282,11 @@ Available targets:
 | <a name="input_cache_type"></a> [cache\_type](#input\_cache\_type) | The type of storage that will be used for the AWS CodeBuild project cache. Valid values: NO\_CACHE, LOCAL, and S3.  Defaults to S3.  If cache\_type is S3, it will create an S3 bucket for storing codebuild cache inside | `string` | `"S3"` | no |
 | <a name="input_codebuild_vpc_config"></a> [codebuild\_vpc\_config](#input\_codebuild\_vpc\_config) | Configuration for the builds to run inside a VPC. | `any` | `{}` | no |
 | <a name="input_codedeploy_application"></a> [codedeploy\_application](#input\_codedeploy\_application) | CodeDeploy application name. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
-| <a name="input_codedeploy_appspec"></a> [codedeploy\_appspec](#input\_codedeploy\_appspec) | AppSpec content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
+| <a name="input_codedeploy_appspec"></a> [codedeploy\_appspec](#input\_codedeploy\_appspec) | AppSpec content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in YAML format. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
 | <a name="input_codedeploy_appspec_path"></a> [codedeploy\_appspec\_path](#input\_codedeploy\_appspec\_path) | AppSpec template path, relative to repository root. Only used when deployment\_provider is CodeDeployToECS. | `string` | `"appspec.yml"` | no |
+| <a name="input_codedeploy_deployment_config"></a> [codedeploy\_deployment\_config](#input\_codedeploy\_deployment\_config) | Config name used in CodeDeploy, eg: CodeDeployDefault.ECSAllAtOnce. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
 | <a name="input_codedeploy_deployment_group"></a> [codedeploy\_deployment\_group](#input\_codedeploy\_deployment\_group) | CodeDeploy deployment group name. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
-| <a name="input_codedeploy_taskdefinition"></a> [codedeploy\_taskdefinition](#input\_codedeploy\_taskdefinition) | Task Definition content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
+| <a name="input_codedeploy_taskdefinition"></a> [codedeploy\_taskdefinition](#input\_codedeploy\_taskdefinition) | Task definition content to be consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment\_provider is CodeDeployToECS. | `string` | `""` | no |
 | <a name="input_codedeploy_taskdefinition_path"></a> [codedeploy\_taskdefinition\_path](#input\_codedeploy\_taskdefinition\_path) | Task definition template path, relative to repository root. Only used when deployment\_provider is CodeDeployToECS. | `string` | `"taskdef.json"` | no |
 | <a name="input_codestar_connection_arn"></a> [codestar\_connection\_arn](#input\_codestar\_connection\_arn) | CodeStar connection ARN required for Bitbucket integration with CodePipeline | `string` | `""` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
@@ -296,7 +301,7 @@ Available targets:
 | <a name="input_github_webhooks_token"></a> [github\_webhooks\_token](#input\_github\_webhooks\_token) | GitHub OAuth Token with permissions to create webhooks. If not provided, can be sourced from the `GITHUB_TOKEN` environment variable | `string` | `""` | no |
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for default, which is `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | <a name="input_image_repo_name"></a> [image\_repo\_name](#input\_image\_repo\_name) | ECR repository name to store the Docker image built by this module. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | `string` | n/a | yes |
-| <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | `string` | `"latest"` | no |
+| <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker image tag in the ECR repository, e.g. 'latest'. Set to an empty string to use CODEBUILD\_RESOLVED\_SOURCE\_VERSION. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html) | `string` | `"latest"` | no |
 | <a name="input_label_key_case"></a> [label\_key\_case](#input\_label\_key\_case) | The letter case of label keys (`tag` names) (i.e. `name`, `namespace`, `environment`, `stage`, `attributes`) to use in `tags`.<br>Possible values: `lower`, `title`, `upper`.<br>Default value: `title`. | `string` | `null` | no |
 | <a name="input_label_order"></a> [label\_order](#input\_label\_order) | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | `null` | no |
 | <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | The letter case of output label values (also used in `tags` and `id`).<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Default value: `lower`. | `string` | `null` | no |

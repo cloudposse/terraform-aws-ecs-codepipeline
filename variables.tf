@@ -125,7 +125,7 @@ variable "image_repo_name" {
 variable "image_tag" {
   type        = string
   default     = "latest"
-  description = "Docker image tag in the ECR repository, e.g. 'latest'. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html)"
+  description = "Docker image tag in the ECR repository, e.g. 'latest'. Set to an empty string to use CODEBUILD_RESOLVED_SOURCE_VERSION. Used as CodeBuild ENV variable when building Docker images. [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html)"
 }
 
 variable "environment_variables" {
@@ -239,7 +239,7 @@ variable "codedeploy_taskdefinition_path" {
 variable "codedeploy_taskdefinition" {
   type        = string
   default     = ""
-  description = "Task Definition content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment_provider is CodeDeployToECS."
+  description = "Task definition content to be consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment_provider is CodeDeployToECS."
 }
 
 # https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html
@@ -252,5 +252,11 @@ variable "codedeploy_appspec_path" {
 variable "codedeploy_appspec" {
   type        = string
   default     = ""
-  description = "AppSpec content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in JSON format. Only used when deployment_provider is CodeDeployToECS."
+  description = "AppSpec content to be written out by CodeBuild and consumed by CodeDeploy as an Artifact. Must be in YAML format. Only used when deployment_provider is CodeDeployToECS."
+}
+
+variable "codedeploy_deployment_config" {
+  type        = string
+  default     = ""
+  description = "Config name used in CodeDeploy, eg: CodeDeployDefault.ECSAllAtOnce. Only used when deployment_provider is CodeDeployToECS."
 }

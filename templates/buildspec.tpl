@@ -4,32 +4,48 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_NAME
+      - export REPOSITORY_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME"
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
   build:
+    on-failure: ABORT
     commands:
       - echo Build started on `date`
-      - echo Building image for $IMAGE_REPO_NAME:latest and $IMAGE_REPO_NAME:$IMAGE_TAG...
-      - docker pull $IMAGE_REPO_NAME:latest || true
-      - docker build --cache-from $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:latest --tag $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - echo Building image for $REPOSITORY_URI:latest and $REPOSITORY_URI:$IMAGE_TAG...
+      - docker pull $REPOSITORY_URI:latest || true
+      - docker build --cache-from $REPOSITORY_URI:latest --tag $REPOSITORY_URI:latest --tag $REPOSITORY_URI:$IMAGE_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing to $IMAGE_REPO_NAME:latest...
-      - docker push $IMAGE_REPO_NAME:latest
-      - echo Pushing to $IMAGE_REPO_NAME:$IMAGE_TAG...
-      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Pushing to $REPOSITORY_URI:latest...
+      - docker push $REPOSITORY_URI:latest
+      - echo Pushing to $REPOSITORY_URI:$IMAGE_TAG...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image detail file...
       - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-      %{ if has_taskdef ~}
+      %{~ if has_taskdef ~}
       - echo Writing task definition file...
-      - echo "${taskdef}" > ${taskdef_path}
-      %{~ endif }
-      %{if has_appspec ~}
+      - |
+        (
+        cat <<EOF
+        ${indent(8, taskdef)}
+        EOF
+        ) > ${taskdef_path}
+      %{~ endif ~}
+      %{~ if has_appspec ~}
       - echo Writing app spec file...
-      - echo "${appspec}" > ${appspec_path}
-      %{~ endif }
+      - |
+        (
+        cat <<EOF
+        ${indent(8, appspec)}
+        EOF
+        ) > ${appspec_path}
+      %{~ endif ~}
 artifacts:
   files: 
     - 'image*.json'
-    %{if has_taskdef}- '${taskdef_path}'%{ endif }
-    %{if has_appspec}- '${appspec_path}'%{ endif }
+    %{~if has_taskdef ~}
+    - '${taskdef_path}'
+    %{~ endif ~}
+    %{~if has_appspec ~}
+    - '${appspec_path}'
+    %{~ endif ~}

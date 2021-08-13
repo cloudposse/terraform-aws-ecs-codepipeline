@@ -122,6 +122,56 @@ data "aws_iam_policy_document" "s3" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "codedeploy" {
+  count      = module.this.enabled && var.deployment_provider == "CodeDeployToECS" ? 1 : 0
+  role       = join("", aws_iam_role.default.*.id)
+  policy_arn = join("", aws_iam_policy.codedeploy.*.arn)
+}
+
+module "codepipeline_codedeploy_policy_label" {
+  source     = "cloudposse/label/null"
+  version    = "0.24.1"
+  attributes = ["codepipeline", "codedeploy"]
+
+  context = module.this.context
+}
+
+resource "aws_iam_policy" "codedeploy" {
+  count  = module.this.enabled && var.deployment_provider == "CodeDeployToECS" ? 1 : 0
+  name   = module.codepipeline_codedeploy_policy_label.id
+  policy = join("", data.aws_iam_policy_document.codedeploy.*.json)
+}
+
+locals {
+  codedeploy_deployment_config = var.codedeploy_deployment_config != "" ? var.codedeploy_deployment_config : "CodeDeployDefault.*"
+}
+
+data "aws_iam_policy_document" "codedeploy" {
+  count = module.this.enabled && var.deployment_provider == "CodeDeployToECS" ? 1 : 0
+
+  statement {
+    sid = ""
+
+    actions = [
+      "codedeploy:CreateDeployment",
+      "codedeploy:GetDeployment",
+      "codedeploy:GetApplication",
+      "codedeploy:GetApplicationRevision",
+      "codedeploy:RegisterApplicationRevision",
+      "codedeploy:GetDeploymentConfig",
+      "ecs:RegisterTaskDefinition"
+    ]
+
+    resources = [
+      "arn:aws:codedeploy:${local.region}:${local.account_id}:application:${var.codedeploy_application}",
+      "arn:aws:codedeploy:${local.region}:${local.account_id}:deploymentgroup:${var.codedeploy_deployment_group}/*",
+      "arn:aws:codedeploy:${local.region}:${local.account_id}:deploymentconfig:${local.codedeploy_deployment_config}",
+    ]
+
+    effect = "Allow"
+  }
+}
+
 resource "aws_iam_role_policy_attachment" "codebuild" {
   count      = module.this.enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
@@ -207,7 +257,9 @@ data "aws_region" "default" {
 }
 
 locals {
-  image_tag = var.image_tag != "" ? var.image_tag : "$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)"
+  account_id = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
+  region     = var.region != "" ? var.region : data.aws_region.default.name
+  image_tag  = var.image_tag != "" ? var.image_tag : "$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)"
   tmpl_vars = {
     has_taskdef  = var.codedeploy_taskdefinition != ""
     has_appspec  = var.codedeploy_appspec != ""
@@ -229,8 +281,8 @@ module "codebuild" {
   delimiter                             = module.this.delimiter
   attributes                            = ["build"]
   privileged_mode                       = var.privileged_mode
-  aws_region                            = var.region != "" ? var.region : data.aws_region.default.name
-  aws_account_id                        = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.default.account_id
+  aws_region                            = local.region
+  aws_account_id                        = local.account_id
   image_repo_name                       = var.image_repo_name
   image_tag                             = var.image_tag
   github_token                          = var.github_oauth_token
@@ -243,6 +295,7 @@ module "codebuild" {
   secondary_artifact_encryption_enabled = var.secondary_artifact_encryption_enabled
   vpc_config                            = var.codebuild_vpc_config
   cache_bucket_suffix_enabled           = var.cache_bucket_suffix_enabled
+  extra_permissions                     = ["ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer"]
 
   context = module.this.context
 }
@@ -261,6 +314,8 @@ locals {
     TaskDefinitionTemplatePath     = var.codedeploy_taskdefinition_path
     AppSpecTemplateArtifact        = "task"
     AppSpecTemplatePath            = var.codedeploy_appspec_path
+    "Image1ArtifactName"           = "task",
+    "Image1ContainerName"          = "IMAGE1_NAME"
     } : {
     ClusterName = var.ecs_cluster_name
     ServiceName = var.service_name
