@@ -10,7 +10,7 @@ variable "service_name" {
 
 variable "github_oauth_token" {
   type        = string
-  description = "GitHub OAuth Token with permissions to access private repositories"
+  description = "Name of the SSM parameter containing a GitHub OAuth Token with permissions to access private repositories"
   default     = ""
 }
 
