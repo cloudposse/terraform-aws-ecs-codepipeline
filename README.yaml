@@ -78,7 +78,7 @@ usage: |-
     repo_owner            = "cloudposse"
     repo_name             = "example"
     branch                = "master"
-    service_name          = "example"
+    service_names         = ["example"]
     ecs_cluster_name      = "eg-staging-example-cluster"
     privileged_mode       = "true"
   }
@@ -101,7 +101,7 @@ usage: |-
     repo_owner                  = "cloudposse"
     repo_name                   = "example"
     branch                      = "master"
-    service_name                = "example"
+    service_names               = ["example"]
     ecs_cluster_name            = "eg-staging-example-cluster"
     privileged_mode             = "true"
     github_webhook_events       = ["release"]

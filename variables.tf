@@ -3,11 +3,6 @@ variable "ecs_cluster_name" {
   description = "ECS Cluster Name"
 }
 
-variable "service_name" {
-  type        = string
-  description = "ECS Service Names"
-  default     = ""
-}
 variable "service_names" {
   type        = list(string)
   description = "ECS Service Names"
