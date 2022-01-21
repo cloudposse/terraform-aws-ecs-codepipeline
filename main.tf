@@ -416,7 +416,7 @@ resource "random_string" "webhook_secret" {
 }
 
 locals {
-  service_names  = compact(concat(var.service_names))
+  service_names  = var.service_names
   webhook_secret = join("", random_string.webhook_secret.*.result)
   webhook_url    = join("", aws_codepipeline_webhook.webhook.*.url)
 }
