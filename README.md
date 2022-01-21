@@ -308,7 +308,7 @@ Available targets:
 | <a name="input_secondary_artifact_bucket_id"></a> [secondary\_artifact\_bucket\_id](#input\_secondary\_artifact\_bucket\_id) | Optional bucket for secondary artifact deployment. If specified, the buildspec must include a secondary artifacts section which controls the artifacts deployed to the bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) | `string` | `null` | no |
 | <a name="input_secondary_artifact_encryption_enabled"></a> [secondary\_artifact\_encryption\_enabled](#input\_secondary\_artifact\_encryption\_enabled) | If set to true, enable encryption on the secondary artifact bucket | `bool` | `false` | no |
 | <a name="input_secondary_artifact_identifier"></a> [secondary\_artifact\_identifier](#input\_secondary\_artifact\_identifier) | Identifier for optional secondary artifact deployment. If specified, the identifier must appear in the buildspec as the name of the section which controls the artifacts deployed to the secondary artifact bucket [For more info](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html) | `string` | `null` | no |
-| <a name="input_service_names"></a> [service\_names](#input\_service\_names) | ECS Service Names | `list` | n/a | yes |
+| <a name="input_service_names"></a> [service\_names](#input\_service\_names) | ECS Service Names | `list(string)` | `[]` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | ID element \_(Rarely used, not included by default)\_. A customer identifier, indicating who this instance of a resource is for | `string` | `null` | no |
@@ -438,7 +438,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2021 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2022 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
