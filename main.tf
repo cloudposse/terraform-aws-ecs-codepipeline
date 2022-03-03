@@ -6,9 +6,12 @@ module "codepipeline_label" {
   context = module.this.context
 }
 
-resource "aws_s3_bucket" "default" {
+module "artifact_store_bucket" {
+  source  = "cloudposse/s3-bucket/aws"
+  version = "0.49.0"
+
   count         = module.this.enabled ? 1 : 0
-  bucket        = module.codepipeline_label.id
+  bucket_name   = module.codepipeline_label.id
   acl           = "private"
   force_destroy = var.s3_bucket_force_destroy
   tags          = module.codepipeline_label.tags
@@ -114,8 +117,8 @@ data "aws_iam_policy_document" "s3" {
     ]
 
     resources = [
-      join("", aws_s3_bucket.default.*.arn),
-      "${join("", aws_s3_bucket.default.*.arn)}/*"
+      join("", module.artifact_store_bucket.*.bucket_arn),
+      "${join("", module.artifact_store_bucket.*.bucket_arn)}/*"
     ]
 
     effect = "Allow"
@@ -246,7 +249,7 @@ resource "aws_codepipeline" "default" {
   role_arn = join("", aws_iam_role.default.*.arn)
 
   artifact_store {
-    location = join("", aws_s3_bucket.default.*.bucket)
+    location = join("", module.artifact_store_bucket.*.bucket_arn)
     type     = "S3"
   }
 
@@ -328,7 +331,7 @@ resource "aws_codepipeline" "bitbucket" {
   role_arn = join("", aws_iam_role.default.*.arn)
 
   artifact_store {
-    location = join("", aws_s3_bucket.default.*.bucket)
+    location = join("", module.artifact_store_bucket.*.bucket_arn)
     type     = "S3"
   }
 
