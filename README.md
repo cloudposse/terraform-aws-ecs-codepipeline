@@ -224,6 +224,7 @@ Available targets:
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_artifact_store_bucket"></a> [artifact\_store\_bucket](#module\_artifact\_store\_bucket) | cloudposse/s3-bucket/aws | 0.49.0 |
 | <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | cloudposse/codebuild/aws | 0.37.1 |
 | <a name="module_codebuild_label"></a> [codebuild\_label](#module\_codebuild\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_codepipeline_assume_role_label"></a> [codepipeline\_assume\_role\_label](#module\_codepipeline\_assume\_role\_label) | cloudposse/label/null | 0.25.0 |
@@ -250,7 +251,6 @@ Available targets:
 | [aws_iam_role_policy_attachment.codestar](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_s3_bucket.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [random_string.webhook_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [aws_caller_identity.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
