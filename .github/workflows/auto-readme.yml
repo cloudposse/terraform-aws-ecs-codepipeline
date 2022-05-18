@@ -22,6 +22,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Find default branch name
+      id: defaultBranch
+      shell: bash
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: |
+        default_branch=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+        printf "::set-output name=defaultBranch::%s\n" "${default_branch}"
+        printf "defaultBranchRef.name=%s\n" "${default_branch}"
+
     - name: Update readme
       shell: bash
       id: update
