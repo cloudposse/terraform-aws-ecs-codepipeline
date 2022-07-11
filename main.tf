@@ -355,7 +355,7 @@ resource "aws_codepipeline" "bitbucket" {
         ConnectionArn        = var.codestar_connection_arn
         FullRepositoryId     = format("%s/%s", var.repo_owner, var.repo_name)
         BranchName           = var.branch
-        OutputArtifactFormat = "CODE_ZIP"
+        OutputArtifactFormat = var.codestar_output_artifact_format
       }
     }
   }
