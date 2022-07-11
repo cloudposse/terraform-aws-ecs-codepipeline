@@ -245,7 +245,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_s3" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_codestar" {
-  count      = module.this.enabled && local.use_codestar ? 1 : 0
+  count      = module.this.enabled && local.use_codestar && var.codestar_output_artifact_format == "CODEBUILD_CLONE_REF" ? 1 : 0
   role       = module.codebuild.role_id
   policy_arn = join("", aws_iam_policy.codestar.*.arn)
 }
