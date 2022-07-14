@@ -1,5 +1,5 @@
 locals {
-  use_codestar = var.codestar_connection_arn != ""
+  codestar_enabled = module.this.enabled && var.codestar_connection_arn != "" && var.codestar_connection_arn != null
 }
 
 module "codepipeline_label" {
@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "codebuild" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/connections-permissions.html
 resource "aws_iam_role_policy_attachment" "codestar" {
-  count      = module.this.enabled && local.use_codestar ? 1 : 0
+  count      = local.codestar_enabled ? 1 : 0
   role       = join("", aws_iam_role.default.*.id)
   policy_arn = join("", aws_iam_policy.codestar.*.arn)
 }
@@ -169,20 +169,20 @@ resource "aws_iam_role_policy_attachment" "codestar" {
 module "codestar_label" {
   source     = "cloudposse/label/null"
   version    = "0.25.0"
-  enabled    = module.this.enabled && local.use_codestar
+  enabled    = local.codestar_enabled
   attributes = ["codestar"]
 
   context = module.this.context
 }
 
 resource "aws_iam_policy" "codestar" {
-  count  = module.this.enabled && local.use_codestar ? 1 : 0
+  count  = local.codestar_enabled ? 1 : 0
   name   = module.codestar_label.id
   policy = join("", data.aws_iam_policy_document.codestar.*.json)
 }
 
 data "aws_iam_policy_document" "codestar" {
-  count = module.this.enabled && local.use_codestar ? 1 : 0
+  count = local.codestar_enabled ? 1 : 0
   statement {
     sid = ""
 
@@ -245,7 +245,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_s3" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_codestar" {
-  count      = module.this.enabled && local.use_codestar && var.codestar_output_artifact_format == "CODEBUILD_CLONE_REF" ? 1 : 0
+  count      = local.codestar_enabled && var.codestar_output_artifact_format == "CODEBUILD_CLONE_REF" ? 1 : 0
   role       = module.codebuild.role_id
   policy_arn = join("", aws_iam_policy.codestar.*.arn)
 }
@@ -333,7 +333,7 @@ resource "aws_codepipeline" "default" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
 resource "aws_codepipeline" "bitbucket" {
-  count    = module.this.enabled && local.use_codestar ? 1 : 0
+  count    = local.codestar_enabled ? 1 : 0
   name     = module.codepipeline_label.id
   role_arn = join("", aws_iam_role.default.*.arn)
 
