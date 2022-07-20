@@ -180,6 +180,12 @@ variable "codestar_connection_arn" {
   default     = ""
 }
 
+variable "codestar_output_artifact_format" {
+  type        = string
+  description = "Output artifact type for Source stage in pipeline. Valid values are \"CODE_ZIP\" (default) and \"CODEBUILD_CLONE_REF\". See https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html"
+  default     = "CODE_ZIP"
+}
+
 variable "cache_type" {
   type        = string
   default     = "S3"
