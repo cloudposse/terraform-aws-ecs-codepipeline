@@ -18,7 +18,8 @@ resource "aws_s3_bucket" "default" {
 }
 
 resource "aws_s3_bucket_acl" "default" {
-  bucket = aws_s3_bucket.default.id
+  count  = module.this.enabled ? 1 : 0
+  bucket = aws_s3_bucket.default[0].id
   acl    = "private"
 }
 
