@@ -13,9 +13,13 @@ module "codepipeline_label" {
 resource "aws_s3_bucket" "default" {
   count         = module.this.enabled ? 1 : 0
   bucket        = module.codepipeline_label.id
-  acl           = "private"
   force_destroy = var.s3_bucket_force_destroy
   tags          = module.codepipeline_label.tags
+}
+
+resource "aws_s3_bucket_acl" "default" {
+  bucket = aws_s3_bucket.default.id
+  acl    = "private"
 }
 
 module "codepipeline_assume_role_label" {
