@@ -95,7 +95,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	taskExecRoleArn := terraform.Output(t, terraformOptions, "task_exec_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, taskExecRoleArn, "role/eg-test-ecs-codepipeline-exec")
+	assert.Contains(t, taskExecRoleArn, "role/eg-test-ecs-codepipeline-"+attributes[0]+"-exec")
 
 	// Run `terraform output` to get the value of an output variable
 	taskRoleName := terraform.Output(t, terraformOptions, "task_role_name")
@@ -105,7 +105,7 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	taskRoleArn := terraform.Output(t, terraformOptions, "task_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, taskRoleArn, "role/eg-test-ecs-codepipeline-task")
+	assert.Contains(t, taskRoleArn, "role/eg-test-ecs-codepipeline-"+attributes[0]+"-task")
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildProjectName := terraform.Output(t, terraformOptions, "codebuild_project_name")
@@ -115,10 +115,10 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	codebuildCacheS3BucketName := terraform.Output(t, terraformOptions, "codebuild_cache_bucket_name")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, codebuildCacheS3BucketName, "eg-test-ecs-codepipeline-build")
+	assert.Contains(t, codebuildCacheS3BucketName, "eg-test-ecs-codepipeline-"+attributes[0]+"-build")
 
 	// Run `terraform output` to get the value of an output variable
 	codepipelineId := terraform.Output(t, terraformOptions, "codepipeline_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-codepipeline-"+attributes[0]+"-codepipeline", codepipelineId)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-codepipeline", codepipelineId)
 }
