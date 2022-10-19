@@ -2,8 +2,10 @@ package test
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 )
@@ -11,6 +13,8 @@ import (
 // Test the Terraform module in examples/complete using Terratest.
 func TestExamplesComplete(t *testing.T) {
 	t.Parallel()
+	randID := strings.ToLower(random.UniqueId())
+	attributes := []string{randID}
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -18,6 +22,9 @@ func TestExamplesComplete(t *testing.T) {
 		Upgrade:      true,
 		// Variables to pass to our Terraform code using -var-file options
 		VarFiles: []string{"fixtures.us-east-2.tfvars"},
+		Vars: map[string]interface{}{
+			"attributes": attributes,
+		},
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
@@ -68,50 +75,50 @@ func TestExamplesComplete(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	ecsExecRolePolicyName := terraform.Output(t, terraformOptions, "ecs_exec_role_policy_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-exec", ecsExecRolePolicyName)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-exec", ecsExecRolePolicyName)
 
 	// Run `terraform output` to get the value of an output variable
 	serviceName := terraform.Output(t, terraformOptions, "service_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline", serviceName)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0], serviceName)
 
 	// Run `terraform output` to get the value of an output variable
 	taskDefinitionFamily := terraform.Output(t, terraformOptions, "task_definition_family")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline", taskDefinitionFamily)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0], taskDefinitionFamily)
 
 	// Run `terraform output` to get the value of an output variable
 	taskExecRoleName := terraform.Output(t, terraformOptions, "task_exec_role_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-exec", taskExecRoleName)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-exec", taskExecRoleName)
 
 	// Run `terraform output` to get the value of an output variable
 	taskExecRoleArn := terraform.Output(t, terraformOptions, "task_exec_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, taskExecRoleArn, "role/eg-test-ecs-codepipeline-exec")
+	assert.Contains(t, taskExecRoleArn, "role/eg-test-ecs-codepipeline-"+attributes[0]+"-exec")
 
 	// Run `terraform output` to get the value of an output variable
 	taskRoleName := terraform.Output(t, terraformOptions, "task_role_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-task", taskRoleName)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-task", taskRoleName)
 
 	// Run `terraform output` to get the value of an output variable
 	taskRoleArn := terraform.Output(t, terraformOptions, "task_role_arn")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, taskRoleArn, "role/eg-test-ecs-codepipeline-task")
+	assert.Contains(t, taskRoleArn, "role/eg-test-ecs-codepipeline-"+attributes[0]+"-task")
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildProjectName := terraform.Output(t, terraformOptions, "codebuild_project_name")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-build", codebuildProjectName)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-build", codebuildProjectName)
 
 	// Run `terraform output` to get the value of an output variable
 	codebuildCacheS3BucketName := terraform.Output(t, terraformOptions, "codebuild_cache_bucket_name")
 	// Verify we're getting back the outputs we expect
-	assert.Contains(t, codebuildCacheS3BucketName, "eg-test-ecs-codepipeline-build")
+	assert.Contains(t, codebuildCacheS3BucketName, "eg-test-ecs-codepipeline-"+attributes[0]+"-build")
 
 	// Run `terraform output` to get the value of an output variable
 	codepipelineId := terraform.Output(t, terraformOptions, "codepipeline_id")
 	// Verify we're getting back the outputs we expect
-	assert.Equal(t, "eg-test-ecs-codepipeline-codepipeline", codepipelineId)
+	assert.Equal(t, "eg-test-ecs-codepipeline-"+attributes[0]+"-codepipeline", codepipelineId)
 }
