@@ -251,6 +251,12 @@ resource "aws_iam_role_policy_attachment" "codebuild_codestar" {
   policy_arn = join("", aws_iam_policy.codestar.*.arn)
 }
 
+resource "aws_iam_role_policy_attachment" "codebuild_extras" {
+  for_each   = module.this.enabled ? toset(var.codebuild_extra_policy_arns) : []
+  role       = module.codebuild.role_id
+  policy_arn = each.value
+}
+
 resource "aws_codepipeline" "default" {
   count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
   name     = module.codepipeline_label.id
@@ -265,7 +271,8 @@ resource "aws_codepipeline" "default" {
     aws_iam_role_policy_attachment.default,
     aws_iam_role_policy_attachment.s3,
     aws_iam_role_policy_attachment.codebuild,
-    aws_iam_role_policy_attachment.codebuild_s3
+    aws_iam_role_policy_attachment.codebuild_s3,
+    aws_iam_role_policy_attachment.codebuild_extras
   ]
 
   stage {
@@ -348,7 +355,8 @@ resource "aws_codepipeline" "bitbucket" {
     aws_iam_role_policy_attachment.s3,
     aws_iam_role_policy_attachment.codebuild,
     aws_iam_role_policy_attachment.codebuild_s3,
-    aws_iam_role_policy_attachment.codestar
+    aws_iam_role_policy_attachment.codestar,
+    aws_iam_role_policy_attachment.codebuild_extras
   ]
 
   stage {
