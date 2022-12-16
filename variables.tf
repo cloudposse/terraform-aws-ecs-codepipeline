@@ -210,3 +210,9 @@ variable "codebuild_vpc_config" {
   default     = {}
   description = "Configuration for the builds to run inside a VPC."
 }
+
+variable "codebuild_extra_policy_arns" {
+  type        = list(string)
+  default     = []
+  description = "List of ARNs of extra policies to attach to the CodeBuild role"
+}
