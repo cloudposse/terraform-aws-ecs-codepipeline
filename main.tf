@@ -51,8 +51,8 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_iam_role_policy_attachment" "default" {
   count      = module.this.enabled ? 1 : 0
-  role       = join("", aws_iam_role.default.*.id)
-  policy_arn = join("", aws_iam_policy.default.*.arn)
+  role       = join("", aws_iam_role.default[*].id)
+  policy_arn = join("", aws_iam_policy.default[*].arn)
 }
 
 resource "aws_iam_policy" "default" {
@@ -86,8 +86,8 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_iam_role_policy_attachment" "s3" {
   count      = module.this.enabled ? 1 : 0
-  role       = join("", aws_iam_role.default.*.id)
-  policy_arn = join("", aws_iam_policy.s3.*.arn)
+  role       = join("", aws_iam_role.default[*].id)
+  policy_arn = join("", aws_iam_policy.s3[*].arn)
 }
 
 module "codepipeline_s3_policy_label" {
@@ -101,7 +101,7 @@ module "codepipeline_s3_policy_label" {
 resource "aws_iam_policy" "s3" {
   count  = module.this.enabled ? 1 : 0
   name   = module.codepipeline_s3_policy_label.id
-  policy = join("", data.aws_iam_policy_document.s3.*.json)
+  policy = join("", data.aws_iam_policy_document.s3[*].json)
 }
 
 data "aws_iam_policy_document" "s3" {
@@ -118,8 +118,8 @@ data "aws_iam_policy_document" "s3" {
     ]
 
     resources = [
-      join("", aws_s3_bucket.default.*.arn),
-      "${join("", aws_s3_bucket.default.*.arn)}/*"
+      join("", aws_s3_bucket.default[*].arn),
+      "${join("", aws_s3_bucket.default[*].arn)}/*"
     ]
 
     effect = "Allow"
@@ -128,8 +128,8 @@ data "aws_iam_policy_document" "s3" {
 
 resource "aws_iam_role_policy_attachment" "codebuild" {
   count      = module.this.enabled ? 1 : 0
-  role       = join("", aws_iam_role.default.*.id)
-  policy_arn = join("", aws_iam_policy.codebuild.*.arn)
+  role       = join("", aws_iam_role.default[*].id)
+  policy_arn = join("", aws_iam_policy.codebuild[*].arn)
 }
 
 module "codebuild_label" {
@@ -162,8 +162,8 @@ data "aws_iam_policy_document" "codebuild" {
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/connections-permissions.html
 resource "aws_iam_role_policy_attachment" "codestar" {
   count      = local.codestar_enabled ? 1 : 0
-  role       = join("", aws_iam_role.default.*.id)
-  policy_arn = join("", aws_iam_policy.codestar.*.arn)
+  role       = join("", aws_iam_role.default[*].id)
+  policy_arn = join("", aws_iam_policy.codestar[*].arn)
 }
 
 module "codestar_label" {
@@ -178,7 +178,7 @@ module "codestar_label" {
 resource "aws_iam_policy" "codestar" {
   count  = local.codestar_enabled ? 1 : 0
   name   = module.codestar_label.id
-  policy = join("", data.aws_iam_policy_document.codestar.*.json)
+  policy = join("", data.aws_iam_policy_document.codestar[*].json)
 }
 
 data "aws_iam_policy_document" "codestar" {
@@ -242,13 +242,13 @@ module "codebuild" {
 resource "aws_iam_role_policy_attachment" "codebuild_s3" {
   count      = module.this.enabled ? 1 : 0
   role       = module.codebuild.role_id
-  policy_arn = join("", aws_iam_policy.s3.*.arn)
+  policy_arn = join("", aws_iam_policy.s3[*].arn)
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_codestar" {
   count      = local.codestar_enabled && var.codestar_output_artifact_format == "CODEBUILD_CLONE_REF" ? 1 : 0
   role       = module.codebuild.role_id
-  policy_arn = join("", aws_iam_policy.codestar.*.arn)
+  policy_arn = join("", aws_iam_policy.codestar[*].arn)
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_extras" {
@@ -260,10 +260,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_extras" {
 resource "aws_codepipeline" "default" {
   count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
   name     = module.codepipeline_label.id
-  role_arn = join("", aws_iam_role.default.*.arn)
+  role_arn = join("", aws_iam_role.default[*].arn)
 
   artifact_store {
-    location = join("", aws_s3_bucket.default.*.bucket)
+    location = join("", aws_s3_bucket.default[*].bucket)
     type     = "S3"
   }
 
@@ -343,10 +343,10 @@ resource "aws_codepipeline" "default" {
 resource "aws_codepipeline" "bitbucket" {
   count    = local.codestar_enabled ? 1 : 0
   name     = module.codepipeline_label.id
-  role_arn = join("", aws_iam_role.default.*.arn)
+  role_arn = join("", aws_iam_role.default[*].arn)
 
   artifact_store {
-    location = join("", aws_s3_bucket.default.*.bucket)
+    location = join("", aws_s3_bucket.default[*].bucket)
     type     = "S3"
   }
 
@@ -426,8 +426,8 @@ resource "random_string" "webhook_secret" {
 }
 
 locals {
-  webhook_secret = join("", random_string.webhook_secret.*.result)
-  webhook_url    = join("", aws_codepipeline_webhook.webhook.*.url)
+  webhook_secret = join("", random_string.webhook_secret[*].result)
+  webhook_url    = join("", aws_codepipeline_webhook.webhook[*].url)
 }
 
 resource "aws_codepipeline_webhook" "webhook" {
@@ -435,7 +435,7 @@ resource "aws_codepipeline_webhook" "webhook" {
   name            = module.codepipeline_label.id
   authentication  = var.webhook_authentication
   target_action   = var.webhook_target_action
-  target_pipeline = join("", aws_codepipeline.default.*.name)
+  target_pipeline = join("", aws_codepipeline.default[*].name)
 
   authentication_configuration {
     secret_token = local.webhook_secret
