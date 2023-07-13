@@ -315,20 +315,24 @@ resource "aws_codepipeline" "default" {
     }
   }
 
-  stage {
-    name = "Deploy"
+  dynamic "stage" {
+    for_each = var.deploy_stage_enabled ? [1] : []
 
-    action {
-      name            = "Deploy"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["task"]
-      version         = "1"
+    content {
+      name = "Deploy"
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
+      action {
+        name            = "Deploy"
+        category        = "Deploy"
+        owner           = "AWS"
+        provider        = "ECS"
+        input_artifacts = ["task"]
+        version         = "1"
+
+        configuration = {
+          ClusterName = var.ecs_cluster_name
+          ServiceName = var.service_name
+        }
       }
     }
   }
@@ -398,20 +402,24 @@ resource "aws_codepipeline" "bitbucket" {
     }
   }
 
-  stage {
-    name = "Deploy"
+  dynamic "stage" {
+    for_each = var.deploy_stage_enabled ? [1] : []
 
-    action {
-      name            = "Deploy"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["task"]
-      version         = "1"
+    content {
+      name = "Deploy"
 
-      configuration = {
-        ClusterName = var.ecs_cluster_name
-        ServiceName = var.service_name
+      action {
+        name            = "Deploy"
+        category        = "Deploy"
+        owner           = "AWS"
+        provider        = "ECS"
+        input_artifacts = ["task"]
+        version         = "1"
+
+        configuration = {
+          ClusterName = var.ecs_cluster_name
+          ServiceName = var.service_name
+        }
       }
     }
   }
