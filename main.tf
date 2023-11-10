@@ -12,7 +12,7 @@ module "codepipeline_label" {
 
 resource "aws_s3_bucket_acl" "default" {
   bucket = resource.aws_s3_bucket.id
-  acl = "private"
+  acl    = "private"
 }
 
 resource "aws_s3_bucket" "default" {
