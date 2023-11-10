@@ -10,10 +10,14 @@ module "codepipeline_label" {
   context = module.this.context
 }
 
+resource "aws_s3_bucket_acl" "default" {
+  bucket = resource.aws_s3_bucket.id
+  acl = "private"
+}
+
 resource "aws_s3_bucket" "default" {
   count         = module.this.enabled ? 1 : 0
   bucket        = module.codepipeline_label.id
-  acl           = "private"
   force_destroy = var.s3_bucket_force_destroy
   tags          = module.codepipeline_label.tags
 }
@@ -213,7 +217,7 @@ data "aws_region" "default" {
 module "codebuild" {
   enabled                               = module.this.enabled
   source                                = "cloudposse/codebuild/aws"
-  version                               = "1.0.0"
+  version                               = "2.0.0"
   build_image                           = var.build_image
   build_compute_type                    = var.build_compute_type
   build_timeout                         = var.build_timeout
