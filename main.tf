@@ -10,9 +10,19 @@ module "codepipeline_label" {
   context = module.this.context
 }
 
+resource "aws_s3_bucket_ownership_controls" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = join("", resource.aws_s3_bucket.default[*].id)
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "default" {
-  bucket = resource.aws_s3_bucket.id
+  count  = module.this.enabled ? 1 : 0
+  bucket = join("", resource.aws_s3_bucket.default[*].id)
   acl    = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.default]
 }
 
 resource "aws_s3_bucket" "default" {
