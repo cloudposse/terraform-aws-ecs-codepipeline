@@ -19,9 +19,9 @@ resource "aws_s3_bucket_ownership_controls" "default" {
 }
 
 resource "aws_s3_bucket_acl" "default" {
-  count  = module.this.enabled ? 1 : 0
-  bucket = join("", resource.aws_s3_bucket.default[*].id)
-  acl    = "private"
+  count      = module.this.enabled ? 1 : 0
+  bucket     = join("", resource.aws_s3_bucket.default[*].id)
+  acl        = "private"
   depends_on = [aws_s3_bucket_ownership_controls.default]
 }
 
