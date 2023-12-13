@@ -213,7 +213,7 @@ data "aws_region" "default" {
 module "codebuild" {
   enabled                               = module.this.enabled
   source                                = "cloudposse/codebuild/aws"
-  version                               = "1.0.0"
+  version                               = "2.0.1"
   build_image                           = var.build_image
   build_compute_type                    = var.build_compute_type
   build_timeout                         = var.build_timeout
@@ -449,7 +449,7 @@ resource "aws_codepipeline_webhook" "webhook" {
 
 module "github_webhooks" {
   source  = "cloudposse/repository-webhooks/github"
-  version = "0.13.0"
+  version = "0.14.0"
 
   enabled              = module.this.enabled && var.webhook_enabled ? true : false
   github_repositories  = [var.repo_name]
