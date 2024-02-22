@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "cloudposse/vpc/aws"
-  version    = "2.1.1"
+  source  = "cloudposse/vpc/aws"
+  version = "2.1.1"
 
   context = module.this.context
 }
@@ -14,7 +14,7 @@ module "subnets" {
   version              = "2.4.1"
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
+  igw_id               = [module.vpc.igw_id]
   nat_gateway_enabled  = true
   nat_instance_enabled = false
 
