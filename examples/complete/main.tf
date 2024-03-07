@@ -3,20 +3,20 @@ provider "aws" {
 }
 
 module "vpc" {
-  source     = "cloudposse/vpc/aws"
-  version    = "0.18.1"
-  cidr_block = var.vpc_cidr_block
+  source                  = "cloudposse/vpc/aws"
+  version                 = "2.1.1"
+  ipv4_primary_cidr_block = var.vpc_cidr_block
 
   context = module.this.context
 }
 
 module "subnets" {
   source               = "cloudposse/dynamic-subnets/aws"
-  version              = "0.39.3"
+  version              = "2.4.1"
   availability_zones   = var.availability_zones
   vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
-  cidr_block           = module.vpc.vpc_cidr_block
+  igw_id               = [module.vpc.igw_id]
+  ipv4_cidr_block      = [module.vpc.vpc_cidr_block]
   nat_gateway_enabled  = true
   nat_instance_enabled = false
 
@@ -44,7 +44,7 @@ module "container_definition" {
 
 module "ecs_alb_service_task" {
   source                             = "cloudposse/ecs-alb-service-task/aws"
-  version                            = "0.42.3"
+  version                            = "0.74.0"
   alb_security_group                 = module.vpc.vpc_default_security_group_id
   container_definition_json          = module.container_definition.json_map_encoded_list
   ecs_cluster_arn                    = aws_ecs_cluster.default.arn
