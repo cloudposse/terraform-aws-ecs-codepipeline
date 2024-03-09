@@ -87,6 +87,7 @@ module "ecs_codepipeline" {
   ecs_cluster_name            = aws_ecs_cluster.default.name
   service_name                = module.ecs_alb_service_task.service_name
   codebuild_extra_policy_arns = var.codebuild_extra_policy_arns
+  deploy_stage_enabled        = var.deploy_stage_enabled 
 
   context = module.this.context
 }

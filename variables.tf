@@ -1,11 +1,13 @@
 variable "ecs_cluster_name" {
   type        = string
-  description = "ECS Cluster Name"
+  description = "ECS Cluster Name, not required if you have deploy stage disabled"
+  default     = ""
 }
 
 variable "service_name" {
   type        = string
-  description = "ECS Service Name"
+  description = "ECS Service Name, not required if you have deploy stage disabled"
+  default     = ""
 }
 
 variable "github_oauth_token" {
@@ -209,4 +211,10 @@ variable "codebuild_extra_policy_arns" {
   type        = list(string)
   default     = []
   description = "List of ARNs of extra policies to attach to the CodeBuild role"
+}
+
+variable "deploy_stage_enabled" {
+  type        = bool
+  default     = true
+  description = "Set to false to disable the deploy stage"
 }

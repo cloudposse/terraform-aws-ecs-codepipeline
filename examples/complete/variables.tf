@@ -204,3 +204,9 @@ variable "codebuild_extra_policy_arns" {
   default     = []
   description = "List of ARNs of extra policies to attach to the CodeBuild role"
 }
+
+variable "deploy_stage_enabled" {
+  type        = bool
+  default     = true
+  description = "Set to false to disable the deploy stage"
+}
