@@ -3,8 +3,10 @@ provider "aws" {
 }
 
 module "vpc" {
-  source  = "cloudposse/vpc/aws"
-  version = "2.1.1"
+  source                  = "cloudposse/vpc/aws"
+  version                 = "2.1.1"
+  ipv4_primary_cidr_block = var.vpc_cidr_block
+
 
   ipv4_primary_cidr_block = var.vpc_cidr_block
   context                 = module.this.context
@@ -44,7 +46,7 @@ module "container_definition" {
 
 module "ecs_alb_service_task" {
   source                             = "cloudposse/ecs-alb-service-task/aws"
-  version                            = "0.72.0"
+  version                            = "0.74.0"
   alb_security_group                 = module.vpc.vpc_default_security_group_id
   container_definition_json          = module.container_definition.json_map_encoded_list
   ecs_cluster_arn                    = aws_ecs_cluster.default.arn
