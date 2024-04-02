@@ -171,7 +171,7 @@ variable "s3_bucket_force_destroy" {
 variable "pipeline_version" {
   type        = string
   description = "Version of the pipeline to be deployed. Accepts V1 or V2"
-  default     = "V2"
+  default     = "V1"
 }
 
 variable "codestar_connection_arn" {
