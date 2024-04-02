@@ -168,6 +168,12 @@ variable "s3_bucket_force_destroy" {
   default     = false
 }
 
+variable "pipeline_version" {
+  type        = string
+  description = "Version of the pipeline to be deployed. Accepts V1 or V2"
+  default     = "V2"
+}
+
 variable "codestar_connection_arn" {
   type        = string
   description = "CodeStar connection ARN required for Bitbucket integration with CodePipeline"

@@ -104,6 +104,8 @@ webhook_enabled = false
 
 s3_bucket_force_destroy = true
 
+pipeline_version = "V2"
+
 environment_variables = [
   {
     name  = "APP_URL"

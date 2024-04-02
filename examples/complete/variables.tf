@@ -199,6 +199,11 @@ variable "s3_bucket_force_destroy" {
   description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
 }
 
+variable "pipeline_version" {
+  type        = string
+  description = "Version of the pipeline to be deployed. Accepts V1 or V2"
+}
+
 variable "codebuild_extra_policy_arns" {
   type        = list(string)
   default     = []
