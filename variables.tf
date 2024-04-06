@@ -43,8 +43,8 @@ variable "badge_enabled" {
 
 variable "build_image" {
   type        = string
-  default     = "aws/codebuild/docker:17.09.0"
-  description = "Docker image for build environment, _e.g._ `aws/codebuild/docker:docker:17.09.0`"
+  default     = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
+  description = "Docker image for build environment, https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html"
 }
 
 variable "build_compute_type" {
