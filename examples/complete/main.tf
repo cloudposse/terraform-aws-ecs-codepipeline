@@ -68,26 +68,29 @@ module "ecs_alb_service_task" {
 }
 
 module "ecs_codepipeline" {
-  source                      = "../../"
-  region                      = var.region
-  github_oauth_token          = var.github_oauth_token
-  repo_owner                  = var.repo_owner
-  repo_name                   = var.repo_name
-  branch                      = var.branch
-  build_image                 = var.build_image
-  build_compute_type          = var.build_compute_type
-  build_timeout               = var.build_timeout
-  poll_source_changes         = var.poll_source_changes
-  privileged_mode             = var.privileged_mode
-  image_repo_name             = var.image_repo_name
-  image_tag                   = var.image_tag
-  webhook_enabled             = var.webhook_enabled
-  s3_bucket_force_destroy     = var.s3_bucket_force_destroy
-  environment_variables       = var.environment_variables
-  ecs_cluster_name            = aws_ecs_cluster.default.name
-  service_name                = module.ecs_alb_service_task.service_name
-  codebuild_extra_policy_arns = var.codebuild_extra_policy_arns
-  pipeline_version            = var.pipeline_version
+  source                           = "../../"
+  region                           = var.region
+  github_oauth_token               = var.github_oauth_token
+  repo_owner                       = var.repo_owner
+  repo_name                        = var.repo_name
+  branch                           = var.branch
+  build_image                      = var.build_image
+  build_compute_type               = var.build_compute_type
+  build_timeout                    = var.build_timeout
+  poll_source_changes              = var.poll_source_changes
+  privileged_mode                  = var.privileged_mode
+  image_repo_name                  = var.image_repo_name
+  image_tag                        = var.image_tag
+  webhook_enabled                  = var.webhook_enabled
+  s3_bucket_force_destroy          = var.s3_bucket_force_destroy
+  environment_variables            = var.environment_variables
+  ecs_cluster_name                 = aws_ecs_cluster.default.name
+  service_name                     = module.ecs_alb_service_task.service_name
+  codebuild_extra_policy_arns      = var.codebuild_extra_policy_arns
+  pipeline_type                    = var.pipeline_type
+  pipeline_v2_pr_branch_includes   = var.pipeline_v2_pr_branch_includes
+  pipeline_v2_pr_events            = var.pipeline_v2_pr_events
+  pipeline_v2_push_branch_includes = var.pipeline_v2_push_branch_includes
 
   context = module.this.context
 }

@@ -259,10 +259,36 @@ resource "aws_iam_role_policy_attachment" "codebuild_extras" {
 }
 
 resource "aws_codepipeline" "default" {
-  count    = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
-  name     = module.codepipeline_label.id
-  role_arn = join("", aws_iam_role.default.*.arn)
-  pipeline_type = var.pipeline_version
+  count          = module.this.enabled && var.github_oauth_token != "" ? 1 : 0
+  name           = module.codepipeline_label.id
+  role_arn       = join("", aws_iam_role.default.*.arn)
+  pipeline_type  = var.pipeline_type
+  execution_mode = var.execution_mode
+
+  trigger {
+    provider_type = var.trigger_provider_type
+
+    git_configuration {
+      source_action_name = "GitHub"
+
+      pull_request {
+        events = var.pipeline_v2_pr_events
+
+        branches {
+          includes = var.pipeline_v2_pr_branch_includes
+        }
+
+      }
+
+      push {
+        branches {
+          includes = var.pipeline_v2_push_branch_includes
+
+        }
+      }
+    }
+  }
+
 
   artifact_store {
     location = join("", aws_s3_bucket.default.*.bucket)
@@ -343,10 +369,36 @@ resource "aws_codepipeline" "default" {
 
 # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html#action-reference-CodestarConnectionSource-example
 resource "aws_codepipeline" "bitbucket" {
-  count         = local.codestar_enabled ? 1 : 0
-  name          = module.codepipeline_label.id
-  role_arn      = join("", aws_iam_role.default.*.arn)
-  pipeline_type = var.pipeline_version
+  count          = local.codestar_enabled ? 1 : 0
+  name           = module.codepipeline_label.id
+  role_arn       = join("", aws_iam_role.default.*.arn)
+  pipeline_type  = var.pipeline_type
+  execution_mode = var.execution_mode
+
+  trigger {
+    provider_type = var.trigger_provider_type
+
+    git_configuration {
+      source_action_name = "Bitbucket"
+
+      pull_request {
+        events = var.pipeline_v2_pr_events
+
+        branches {
+          includes = var.pipeline_v2_pr_branch_includes
+        }
+
+      }
+
+      push {
+        branches {
+          includes = var.pipeline_v2_push_branch_includes
+
+        }
+      }
+    }
+  }
+
 
   artifact_store {
     location = join("", aws_s3_bucket.default.*.bucket)

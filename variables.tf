@@ -174,10 +174,37 @@ variable "s3_bucket_force_destroy" {
   default     = false
 }
 
-variable "pipeline_version" {
+variable "pipeline_type" {
   type        = string
   description = "Version of the pipeline to be deployed. Accepts V1 or V2"
   default     = "V1"
+}
+variable "execution_mode" {
+  type        = string
+  description = "The execution mode of the pipeline. Possible values include SUPERSEDED, PARALLEL OR QUEUED"
+  default     = "SUPERSEDED"
+}
+variable "trigger_provider_type" {
+  type        = string
+  description = "The only current option is 'CodeStarSourceConnection'"
+  default = "CodeStarSourceConnection"
+}
+variable "pipeline_v2_pr_branch_includes" {
+  type = list(string)
+  description = "A list of branch names that the pipeline will trigger on for pull requests."
+  default = null
+
+}
+variable "pipeline_v2_pr_events" {
+  type = list(string)
+  description = "A list that specifies which pull request events to filter on for the trigger configuration. Possible values are OPEN, UPDATED and CLOSED"
+  default = null
+}
+variable "pipeline_v2_push_branch_includes" {
+  type = list(string)
+  description = "A list of branch names that the pipeline will trigger on for push events."
+  default = null
+
 }
 
 variable "codestar_connection_arn" {
