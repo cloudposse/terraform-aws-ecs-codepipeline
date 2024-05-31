@@ -199,6 +199,28 @@ variable "s3_bucket_force_destroy" {
   description = "A boolean that indicates all objects should be deleted from the CodePipeline artifact store S3 bucket so that the bucket can be destroyed without error"
 }
 
+variable "pipeline_type" {
+  type        = string
+  description = "Version of the pipeline to be deployed. Accepts V1 or V2"
+}
+variable "pipeline_v2_pr_branch_includes" {
+  type        = list(string)
+  description = "A list of branch names that the pipeline will trigger on for pull requests."
+  default     = null
+
+}
+variable "pipeline_v2_pr_events" {
+  type        = list(string)
+  description = "A list that specifies which pull request events to filter on for the trigger configuration. Possible values are OPEN, UPDATED and CLOSED"
+  default     = null
+}
+variable "pipeline_v2_push_branch_includes" {
+  type        = list(string)
+  description = "A list of branch names that the pipeline will trigger on for push events."
+  default     = null
+
+}
+
 variable "codebuild_extra_policy_arns" {
   type        = list(string)
   default     = []

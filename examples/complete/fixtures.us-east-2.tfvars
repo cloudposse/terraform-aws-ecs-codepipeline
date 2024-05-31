@@ -104,6 +104,14 @@ webhook_enabled = false
 
 s3_bucket_force_destroy = true
 
+pipeline_type = "V2"
+
+pipeline_v2_pr_branch_includes = ["main"]
+
+pipeline_v2_pr_events = ["CLOSED"]
+
+pipeline_v2_push_branch_includes = ["main"]
+
 environment_variables = [
   {
     name  = "APP_URL"
