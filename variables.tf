@@ -43,8 +43,8 @@ variable "badge_enabled" {
 
 variable "build_image" {
   type        = string
-  default     = "aws/codebuild/docker:17.09.0"
-  description = "Docker image for build environment, _e.g._ `aws/codebuild/docker:docker:17.09.0`"
+  default     = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
+  description = "Docker image for build environment, https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html"
 }
 
 variable "build_compute_type" {
@@ -57,6 +57,12 @@ variable "build_timeout" {
   type        = number
   default     = 60
   description = "How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed"
+}
+
+variable "build_type" {
+  type        = string
+  default     = "LINUX_CONTAINER"
+  description = "The type of build environment, e.g. 'LINUX_CONTAINER' or 'WINDOWS_CONTAINER' or 'ARM_CONTAINER'"
 }
 
 variable "buildspec" {
