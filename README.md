@@ -3,7 +3,7 @@
 <!-- markdownlint-disable -->
 <a href="https://cpco.io/homepage"><img src="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/blob/main/.github/banner.png?raw=true" alt="Project Banner"/></a><br/>
     <p align="right">
-<a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/actions"><img src="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/workflows/test/badge.svg?branch=master" alt="GitHub Action Tests"/></a><a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest"><img src="https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg?style=for-the-badge" alt="Latest Release"/></a><a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/commits"><img src="https://img.shields.io/github/last-commit/cloudposse/terraform-aws-ecs-codepipeline.svg?style=for-the-badge" alt="Last Updated"/></a><a href="https://slack.cloudposse.com"><img src="https://slack.cloudposse.com/for-the-badge.svg" alt="Slack Community"/></a></p>
+<a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/actions"><img src="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/workflows/test/badge.svg?branch=master" alt="GitHub Action Tests"/></a><a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/releases/latest"><img src="https://img.shields.io/github/release/cloudposse/terraform-aws-ecs-codepipeline.svg?style=for-the-badge" alt="Latest Release"/></a><a href="https://github.com/cloudposse/terraform-aws-ecs-codepipeline/commits"><img src="https://img.shields.io/github/last-commit/cloudposse/terraform-aws-ecs-codepipeline.svg?style=for-the-badge" alt="Last Updated"/></a><a href="https://cloudposse.com/slack"><img src="https://slack.cloudposse.com/for-the-badge.svg" alt="Slack Community"/></a></p>
 <!-- markdownlint-restore -->
 
 <!--
@@ -46,7 +46,6 @@ Terraform Module for CI/CD with AWS Code Pipeline using GitHub webhook triggers 
 
 
 ## Usage
-
 
 For a complete example, see [examples/complete](examples/complete).
 
@@ -153,17 +152,6 @@ artifacts:
 
 
 
-<!-- markdownlint-disable -->
-## Makefile Targets
-```text
-Available targets:
-
-  help                                Help screen
-  help/all                            Display help for all targets
-  help/short                          This help short screen
-
-```
-<!-- markdownlint-restore -->
 <!-- markdownlint-disable -->
 ## Requirements
 
@@ -299,6 +287,11 @@ Available targets:
 | <a name="output_webhook_id"></a> [webhook\_id](#output\_webhook\_id) | The CodePipeline webhook's ID |
 | <a name="output_webhook_url"></a> [webhook\_url](#output\_webhook\_url) | The CodePipeline webhook's URL. POST events to this endpoint to trigger the target |
 <!-- markdownlint-restore -->
+
+
+
+
+
 
 
 ## Related Projects
