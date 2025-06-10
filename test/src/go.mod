@@ -1,8 +1,8 @@
 module github.com/cloudposse/terraform-aws-ecs-codepipeline
 
-go 1.21
+go 1.24
 
-toolchain go1.21.7
+toolchain go1.24.0
 
 require (
 	github.com/gruntwork-io/terratest v0.46.13
